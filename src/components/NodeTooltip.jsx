@@ -11,13 +11,13 @@ function NodeTooltip({ node }) {
 
       {node.year && <p>Year: {node.year}</p>}
 
-      {node.country && <p>Country: {node.country}</p>}
+      {node.country && <p>Country: {node.country.join(", ")}</p>}
 
       {node.city && <p>City: {node.city}</p>}
 
       {node.runtime && <p>Runtime: {node.runtime} minutes</p>}
 
-      {node.genre && <p>Genre: {node.genre}</p>}
+      {node.genre?.length > 0 && <p>Genre: {node.genre.join(", ")}</p>}
 
       {node.director && <p>Director: {node.director}</p>}
     </div>

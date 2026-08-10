@@ -9,9 +9,20 @@ function BuildGraph(films, runs, festivals) {
       title: film["title.mixed"],
       year: +film["prod.year"],
       runtime: +film["length.min"],
-      country: film["prod.country.1.en"],
+      country: [
+        film["prod.country.1.en"],
+        film["prod.country.2.en"],
+        film["prod.country.3.en"],
+        film["prod.country.4.en"],
+      ].filter((country) => country && country !== "NA"),
       director: film["director.1"],
-      genre: film["genre"],
+      genre: [
+        +film["doc"] === 1 && "Documentary",
+        +film["fict"] === 1 && "Fiction",
+        +film["exp"] === 1 && "Experimental",
+        +film["animt"] === 1 && "Animation",
+        +film["lgbtq"] === "LGBT*Q films" && "LGBTQ+",
+      ].filter(Boolean),
 
       group: "film",
     });

@@ -70,11 +70,11 @@
   width: 100%;
   padding: 20px 30px;
   border: 2px solid lightblue;
-  background-color: #1a1b1b;
+  background-color: rgb(5, 117, 155);
   font: 18px/145% var(--sans);
 }
 .simulation-button:hover {
-  background-color: #0f0f0f;
+  background-color: rgb(18, 145, 187);
 }
 .simulation-button:active {
   opacity: 70%;

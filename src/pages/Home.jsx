@@ -14,10 +14,16 @@ function Home() {
 
   const [filters, setFilters] = useState({
     documentaryOnly: false,
+    fictOnly: false,
+    expOnly: false,
+    animtOnly: false,
+    lgbtqOnly: "other films",
+
     minYear: 1900,
     maxYear: 2026,
     minRuntime: 0,
     maxRuntime: 1000,
+    country: "",
   });
 
   const [repel, setRepel] = useState(15);
