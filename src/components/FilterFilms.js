@@ -4,7 +4,7 @@ function FilterFilms(films, filters) {
     if (filters.fictOnly && +film.fict !== 1) return false;
     if (filters.expOnly && +film.exp !== 1) return false;
     if (filters.animtOnly && +film.animt !== 1) return false;
-    if (filters.lgbtqOnly && +film.lgbtq === "other films") return false;
+    if (filters.lgbtqOnly && film["lgbtq"] !== "LGBT*Q films") return false;
 
     const year = +film["prod.year"];
 
@@ -16,21 +16,44 @@ function FilterFilms(films, filters) {
     )
       return false;
 
-    const [c1, c2, c3, c4] = [
-      film["prod.country.1.en"],
-      film["prod.country.2.en"],
-      film["prod.country.3.en"],
-      film["prod.country.4.en"],
-    ];
-    if (
-      filters.country !== "" &&
-      ![c1, c2, c3, c4]
-        .filter(Boolean)
-        .some(
-          (country) => country.toLowerCase() === filters.country.toLowerCase(),
-        )
-    )
-      return false;
+    // country filter
+    const filmCountries = Array.from(
+      { length: 7 },
+      (_, i) => film[`prod.country.${i + 1}.en`],
+    ).filter((country) => country && country !== "NA");
+
+    if (filters.country.length > 0) {
+      const hasAllSelectedCountries = filters.country.every((selectedCountry) =>
+        filmCountries.some(
+          (filmCountry) =>
+            filmCountry.toLowerCase() === selectedCountry.toLowerCase(),
+        ),
+      );
+
+      if (!hasAllSelectedCountries) {
+        return false;
+      }
+    }
+
+    // director filter
+    const filmDirectors = Array.from(
+      { length: 26 },
+      (_, i) => film[`director.${i + 1}`],
+    ).filter((director) => director && director !== "NA");
+
+    if (filters.director.length > 0) {
+      const hasAllSelectedDirectors = filters.director.every(
+        (selectedDirector) =>
+          filmDirectors.some(
+            (filmDirector) =>
+              filmDirector.toLowerCase() === selectedDirector.toLowerCase(),
+          ),
+      );
+
+      if (!hasAllSelectedDirectors) {
+        return false;
+      }
+    }
 
     return true;
   });

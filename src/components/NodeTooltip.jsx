@@ -11,7 +11,7 @@ function NodeTooltip({ node }) {
 
       {node.year && <p>Year: {node.year}</p>}
 
-      {node.country && <p>Country: {node.country.join(", ")}</p>}
+      {node.country && <p>Countries: {node.country.join(", ")}</p>}
 
       {node.city && <p>City: {node.city}</p>}
 
@@ -19,7 +19,9 @@ function NodeTooltip({ node }) {
 
       {node.genre?.length > 0 && <p>Genre: {node.genre.join(", ")}</p>}
 
-      {node.director && <p>Director: {node.director}</p>}
+      {node.director?.length > 0 && (
+        <p>Directors: {node.director.join(", ")}</p>
+      )}
     </div>
   );
 }

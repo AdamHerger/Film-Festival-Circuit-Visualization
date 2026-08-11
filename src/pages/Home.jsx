@@ -17,13 +17,15 @@ function Home() {
     fictOnly: false,
     expOnly: false,
     animtOnly: false,
-    lgbtqOnly: "other films",
+    lgbtqOnly: false,
 
     minYear: 1900,
     maxYear: 2026,
     minRuntime: 0,
     maxRuntime: 1000,
-    country: "",
+
+    country: [],
+    director: [],
   });
 
   const [repel, setRepel] = useState(15);
@@ -55,7 +57,11 @@ function Home() {
           <button className="simulation-button" onClick={runSimulation}>
             Run Simulation
           </button>
-          <AttributeFilters filters={filters} setFilters={setFilters} />
+          <AttributeFilters
+            filters={filters}
+            setFilters={setFilters}
+            films={films}
+          />
         </div>
       </div>
       <div className="force-box-set">

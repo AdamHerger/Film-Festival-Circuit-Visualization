@@ -15,14 +15,17 @@ function BuildGraph(films, runs, festivals) {
         film["prod.country.3.en"],
         film["prod.country.4.en"],
       ].filter((country) => country && country !== "NA"),
-      director: film["director.1"],
       genre: [
         +film["doc"] === 1 && "Documentary",
         +film["fict"] === 1 && "Fiction",
         +film["exp"] === 1 && "Experimental",
         +film["animt"] === 1 && "Animation",
-        +film["lgbtq"] === "LGBT*Q films" && "LGBTQ+",
+        film["lgbtq"] === "LGBT*Q films" && "LGBTQ+",
       ].filter(Boolean),
+      director: Array.from(
+        { length: 26 },
+        (_, i) => film[`director.${i + 1}`],
+      ).filter((director) => director && director !== "NA"),
 
       group: "film",
     });

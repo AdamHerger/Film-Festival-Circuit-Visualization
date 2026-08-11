@@ -1,8 +1,31 @@
 import CheckBoxFilter from "./CheckBoxFilter";
 import RangeSliderFilter from "./RangeSliderFilter";
 import InputBoxFilter from "./InputBoxFilter";
+import DropdownFilter from "./DropdownFilter";
+import { getUniqueOptions } from "./FilterOptions";
 
-function AttributeFilters({ filters, setFilters }) {
+import { useMemo } from "react";
+
+function AttributeFilters({ filters, setFilters, films }) {
+  // stored attributes
+  const countryOptions = useMemo(
+    () =>
+      getUniqueOptions(
+        films,
+        Array.from({ length: 7 }, (_, i) => `prod.country.${i + 1}.en`),
+      ),
+    [films],
+  );
+
+  const directorOptions = useMemo(
+    () =>
+      getUniqueOptions(
+        films,
+        Array.from({ length: 26 }, (_, i) => `director.${i + 1}`),
+      ),
+    [films],
+  );
+
   return (
     <div>
       <br />
@@ -79,9 +102,10 @@ function AttributeFilters({ filters, setFilters }) {
       <br />
       <div className="filter-box">
         <div className="filter-component">
-          <InputBoxFilter
+          <DropdownFilter
             label="Production Country"
             value="country"
+            options={countryOptions}
             filters={filters}
             setFilters={setFilters}
           />

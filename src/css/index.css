@@ -136,3 +136,30 @@
   padding-left: 2.15%;
   gap: 10px;
 }
+
+/*dropdown menu css stuff*/
+.filter-select__option {
+  color: black !important;
+}
+
+.filter-select__control {
+  background-color: var(--bg) !important;
+}
+
+.filter-select__value-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.filter-select__multi-value {
+  width: 100%;
+}
+
+.filter-select__multi-value__remove {
+  color: black;
+}
+
+.filter-select__input {
+  color: white !important;
+}
