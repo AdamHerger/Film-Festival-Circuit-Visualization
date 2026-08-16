@@ -23,7 +23,7 @@ function DropdownFilter({ label, value, options, filters, setFilters }) {
         options={options}
         value={selectedOptions}
         onChange={handleChange}
-        placeholder={`Select ${label.toLowerCase()}...`}
+        placeholder={`Select ${label}...`}
         closeMenuOnSelect={false}
         classNamePrefix="filter-select"
       />

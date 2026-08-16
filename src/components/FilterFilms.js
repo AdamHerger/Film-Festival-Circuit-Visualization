@@ -1,10 +1,22 @@
 function FilterFilms(films, filters) {
   return films.filter((film) => {
+    console.log([...new Set(films.map((film) => film["regions.mena"]))]);
+    console.log(films.filter((film) => +film["regions.mena"] === 1).length);
+    // categories
     if (filters.documentaryOnly && +film.doc !== 1) return false;
     if (filters.fictOnly && +film.fict !== 1) return false;
     if (filters.expOnly && +film.exp !== 1) return false;
     if (filters.animtOnly && +film.animt !== 1) return false;
     if (filters.lgbtqOnly && film["lgbtq"] !== "LGBT*Q films") return false;
+
+    // regions
+    if (filters.MENA && +film["regions.mena"] !== 1) return false;
+    if (filters.africa && +film["regions.africa"] !== 1) return false;
+    if (filters.asia && +film["regions.asia"] !== 1) return false;
+    if (filters.na && +film["regions.na"] !== 1) return false;
+    if (filters.eu && +film["regions.eu"] !== 1) return false;
+    if (filters.la && +film["regions.la"] !== 1) return false;
+    if (filters.ocean && +film["regions.ocean"] !== 1) return false;
 
     const year = +film["prod.year"];
 

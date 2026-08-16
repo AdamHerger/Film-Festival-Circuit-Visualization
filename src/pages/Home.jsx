@@ -19,6 +19,14 @@ function Home() {
     animtOnly: false,
     lgbtqOnly: false,
 
+    MENA: false,
+    africa: false,
+    asia: false,
+    na: false,
+    eu: false,
+    la: false,
+    ocean: false,
+
     minYear: 1900,
     maxYear: 2026,
     minRuntime: 0,

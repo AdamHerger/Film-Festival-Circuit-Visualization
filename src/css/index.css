@@ -98,6 +98,7 @@
 .filter-section {
   padding-top: 10px;
   padding-right: 10px;
+  width: 20%;
 }
 
 .filter-component {
@@ -150,6 +151,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  width: 100%;
 }
 
 .filter-select__multi-value {

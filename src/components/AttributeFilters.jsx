@@ -111,6 +111,81 @@ function AttributeFilters({ filters, setFilters, films }) {
           />
         </div>
       </div>
+
+      <br />
+
+      <div className="filter-box">
+        <div className="filter-component">
+          <CheckBoxFilter
+            label="North America"
+            attribute="na"
+            filters={filters}
+            setFilters={setFilters}
+          />
+        </div>
+        <div className="filter-component">
+          <CheckBoxFilter
+            label="Europe"
+            attribute="eu"
+            filters={filters}
+            setFilters={setFilters}
+          />
+        </div>
+        <div className="filter-component">
+          <CheckBoxFilter
+            label="Asia"
+            attribute="asia"
+            filters={filters}
+            setFilters={setFilters}
+          />
+        </div>
+        <div className="filter-component">
+          <CheckBoxFilter
+            label="Africa"
+            attribute="africa"
+            filters={filters}
+            setFilters={setFilters}
+          />
+        </div>
+        <div className="filter-component">
+          <CheckBoxFilter
+            label="Latin America"
+            attribute="la"
+            filters={filters}
+            setFilters={setFilters}
+          />
+        </div>
+        <div className="filter-component">
+          <CheckBoxFilter
+            label="Oceania"
+            attribute="ocean"
+            filters={filters}
+            setFilters={setFilters}
+          />
+        </div>
+        <div className="filter-component">
+          <CheckBoxFilter
+            label="MENA"
+            attribute="MENA"
+            filters={filters}
+            setFilters={setFilters}
+          />
+        </div>
+      </div>
+
+      <br />
+
+      <div className="filter-box">
+        <div className="filter-component">
+          <DropdownFilter
+            label="Directors"
+            value="director"
+            options={directorOptions}
+            filters={filters}
+            setFilters={setFilters}
+          />
+        </div>
+      </div>
       <br />
     </div>
   );

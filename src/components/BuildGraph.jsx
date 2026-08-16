@@ -15,6 +15,15 @@ function BuildGraph(films, runs, festivals) {
         film["prod.country.3.en"],
         film["prod.country.4.en"],
       ].filter((country) => country && country !== "NA"),
+      region: [
+        +film["regions.mena"] === 1 && "MENA",
+        +film["regions.africa"] === 1 && "Africa",
+        +film["regions.asia"] === 1 && "Asia",
+        +film["regions.na"] === 1 && "North America",
+        +film["regions.eu"] === 1 && "Europe",
+        +film["regions.la"] === 1 && "Latin America",
+        +film["regions.ocean"] === 1 && "Ocean",
+      ].filter(Boolean),
       genre: [
         +film["doc"] === 1 && "Documentary",
         +film["fict"] === 1 && "Fiction",

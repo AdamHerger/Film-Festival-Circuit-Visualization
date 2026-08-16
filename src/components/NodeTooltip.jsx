@@ -19,6 +19,8 @@ function NodeTooltip({ node }) {
 
       {node.genre?.length > 0 && <p>Genre: {node.genre.join(", ")}</p>}
 
+      {node.region?.length > 0 && <p>Region: {node.region.join(", ")}</p>}
+
       {node.director?.length > 0 && (
         <p>Directors: {node.director.join(", ")}</p>
       )}
