@@ -9,6 +9,8 @@ import SingleRangeSlider from "../components/SingleRangeSlider";
 function Home() {
   const [films, setFilms] = useState([]);
   const [runs, setRuns] = useState([]);
+  const [awards, setAwards] = useState([]);
+  const [general, setGeneral] = useState([]);
   const [festivals, setFestivals] = useState([]);
   const [graphData, setGraphData] = useState(null);
 
@@ -34,6 +36,7 @@ function Home() {
 
     country: [],
     director: [],
+    awards: [],
   });
 
   const [repel, setRepel] = useState(15);
@@ -44,16 +47,20 @@ function Home() {
       d3.csv("/dataset/1_film-dataset_festival-program_wide.csv"),
       d3.csv("/dataset/3_imdb-dataset_festival-runs_long.csv"),
       d3.dsv(";", "/dataset/4_festival-library_dataset_imdb-and-survey.csv"),
-    ]).then(([films, runs, festivals]) => {
+      d3.csv("/dataset/3_imdb-dataset_awards_long.csv"),
+      d3.csv("/dataset/3_imdb-dataset_general-info_wide.csv"),
+    ]).then(([films, runs, festivals, awards, general]) => {
       setFilms(films);
       setRuns(runs);
       setFestivals(festivals);
+      setAwards(awards);
+      setGeneral(general);
     });
   }, []);
 
   const runSimulation = () => {
-    const filteredFilms = FilterFilms(films, filters);
-    const graph = BuildGraph(filteredFilms, runs, festivals);
+    const filteredFilms = FilterFilms(films, filters, awards, general);
+    const graph = BuildGraph(filteredFilms, runs, festivals, awards, general);
     setGraphData(graph);
   };
 
@@ -65,30 +72,31 @@ function Home() {
           <button className="simulation-button" onClick={runSimulation}>
             Run Simulation
           </button>
+          <div className="force-box-set">
+            <div className="force-box">
+              <SingleRangeSlider
+                label="Attraction Force"
+                minval={1}
+                maxval={100}
+                value={attract}
+                setValue={setAttract}
+              />
+            </div>
+            <div className="force-box">
+              <SingleRangeSlider
+                label="Repelling Force"
+                minval={1}
+                maxval={100}
+                value={repel}
+                setValue={setRepel}
+              />
+            </div>
+          </div>
           <AttributeFilters
             filters={filters}
             setFilters={setFilters}
             films={films}
-          />
-        </div>
-      </div>
-      <div className="force-box-set">
-        <div className="force-box">
-          <SingleRangeSlider
-            label="Attraction Force"
-            minval={1}
-            maxval={100}
-            value={attract}
-            setValue={setAttract}
-          />
-        </div>
-        <div className="force-box">
-          <SingleRangeSlider
-            label="Repelling Force"
-            minval={1}
-            maxval={100}
-            value={repel}
-            setValue={setRepel}
+            awards={awards}
           />
         </div>
       </div>

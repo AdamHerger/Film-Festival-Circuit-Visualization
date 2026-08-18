@@ -1,6 +1,38 @@
-function BuildGraph(films, runs, festivals) {
+function BuildGraph(films, runs, festivals, awards, general) {
   const filmNodes = new Map();
   const festivalNodes = new Map();
+  const awardsByImdb = new Map();
+  const generalByImdb = new Map();
+
+  awards.forEach((award) => {
+    const imdbId = award["imdb.id"];
+
+    if (!awardsByImdb.has(imdbId)) {
+      awardsByImdb.set(imdbId, []);
+    }
+
+    awardsByImdb.get(imdbId).push({
+      award: award["award"],
+    });
+  });
+
+  general.forEach((info) => {
+    const imdbId = info["imdb.id"];
+
+    if (!generalByImdb.has(imdbId)) {
+      generalByImdb.set(imdbId, []);
+    }
+
+    generalByImdb.get(imdbId).push({
+      languages: info["languages"],
+      genres: info["genres"],
+      rating: info["rating"],
+      budget: info["budget"],
+      openingusa: info["openingUSA"],
+      grossusa: info["grossUSA"],
+      grossworld: info["grossWorld"],
+    });
+  });
 
   films.forEach((film) => {
     filmNodes.set(`film_${film["unique.id"]}`, {
@@ -35,6 +67,11 @@ function BuildGraph(films, runs, festivals) {
         { length: 26 },
         (_, i) => film[`director.${i + 1}`],
       ).filter((director) => director && director !== "NA"),
+      awards: [
+        ...new Set(
+          (awardsByImdb.get(film["imdb.id"]) || []).map((award) => award.award),
+        ),
+      ],
 
       group: "film",
     });
@@ -45,7 +82,20 @@ function BuildGraph(films, runs, festivals) {
       id: festival["festival.id"],
       type: "festival",
       label: festival["fest.label"],
-      city: festival["fest.location.city.en.1"],
+      country: [
+        festival["fest.location.country.en.1.standrardized"],
+        festival["fest.location.country.en.2.standrardized"],
+        festival["fest.location.country.en.3.standrardized"],
+        festival["fest.location.country.en.4.standrardized"],
+        festival["fest.location.country.en.5.standrardized"],
+      ].filter((country) => country && country !== "NA"),
+      city: [
+        festival["fest.location.city.en.1"],
+        festival["fest.location.city.en.2"],
+        festival["fest.location.city.en.3"],
+        festival["fest.location.city.en.4"],
+        festival["fest.location.city.en.5"],
+      ].filter((city) => city && city !== "NA" && city !== "0" && city !== 0),
       group: "festival",
     });
   });

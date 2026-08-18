@@ -1,7 +1,17 @@
-function FilterFilms(films, filters) {
+function FilterFilms(films, filters, awards) {
+  const awardsByImdb = new Map();
+
+  awards.forEach((award) => {
+    const imdbId = award["imdb.id"];
+
+    if (!awardsByImdb.has(imdbId)) {
+      awardsByImdb.set(imdbId, []);
+    }
+
+    awardsByImdb.get(imdbId).push(award["award"]);
+  });
+
   return films.filter((film) => {
-    console.log([...new Set(films.map((film) => film["regions.mena"]))]);
-    console.log(films.filter((film) => +film["regions.mena"] === 1).length);
     // categories
     if (filters.documentaryOnly && +film.doc !== 1) return false;
     if (filters.fictOnly && +film.fict !== 1) return false;
@@ -63,6 +73,21 @@ function FilterFilms(films, filters) {
       );
 
       if (!hasAllSelectedDirectors) {
+        return false;
+      }
+    }
+
+    const filmAwards = awardsByImdb.get(film["imdb.id"]) || [];
+
+    if (filters.awards.length > 0) {
+      const hasAllSelectedAwards = filters.awards.every((selectedAward) =>
+        filmAwards.some(
+          (filmAward) =>
+            filmAward.toLowerCase() === selectedAward.toLowerCase(),
+        ),
+      );
+
+      if (!hasAllSelectedAwards) {
         return false;
       }
     }

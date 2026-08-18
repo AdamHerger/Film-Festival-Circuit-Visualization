@@ -6,7 +6,7 @@ import { getUniqueOptions } from "./FilterOptions";
 
 import { useMemo } from "react";
 
-function AttributeFilters({ filters, setFilters, films }) {
+function AttributeFilters({ filters, setFilters, films, awards, general }) {
   // stored attributes
   const countryOptions = useMemo(
     () =>
@@ -24,6 +24,23 @@ function AttributeFilters({ filters, setFilters, films }) {
         Array.from({ length: 26 }, (_, i) => `director.${i + 1}`),
       ),
     [films],
+  );
+
+  const awardOptions = useMemo(
+    () =>
+      [
+        ...new Set(
+          awards
+            .map((award) => award["award"])
+            .filter((award) => award && award !== "NA"),
+        ),
+      ]
+        .sort()
+        .map((award) => ({
+          value: award,
+          label: award,
+        })),
+    [awards],
   );
 
   return (
@@ -187,6 +204,17 @@ function AttributeFilters({ filters, setFilters, films }) {
         </div>
       </div>
       <br />
+      <div className="filter-box">
+        <div className="filter-component">
+          <DropdownFilter
+            label="Awards"
+            value="awards"
+            options={awardOptions}
+            filters={filters}
+            setFilters={setFilters}
+          />
+        </div>
+      </div>
     </div>
   );
 }

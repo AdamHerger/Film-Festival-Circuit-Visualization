@@ -13,7 +13,7 @@ function NodeTooltip({ node }) {
 
       {node.country && <p>Countries: {node.country.join(", ")}</p>}
 
-      {node.city && <p>City: {node.city}</p>}
+      {node.city && <p>City: {node.city.join(", ")}</p>}
 
       {node.runtime && <p>Runtime: {node.runtime} minutes</p>}
 
@@ -24,6 +24,8 @@ function NodeTooltip({ node }) {
       {node.director?.length > 0 && (
         <p>Directors: {node.director.join(", ")}</p>
       )}
+
+      {node.awards?.length > 0 && <p>Awards: {node.awards.join(", ")}</p>}
     </div>
   );
 }
