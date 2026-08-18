@@ -23,7 +23,7 @@ function NodeGraph({ data, repel, attract }) {
     const color = d3
       .scaleOrdinal()
       .domain(["film", "festival"])
-      .range(["#4dabf7", "#ff6b6b"]);
+      .range(["#56a4e4", "#dd6363"]);
 
     const links = data.links.map((d) => ({ ...d }));
     const nodes = data.nodes.map((d) => ({ ...d }));

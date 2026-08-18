@@ -3,6 +3,7 @@ function BuildGraph(films, runs, festivals, awards, general) {
   const festivalNodes = new Map();
   const awardsByImdb = new Map();
   const generalByImdb = new Map();
+  const runInfoByImdb = new Map();
 
   awards.forEach((award) => {
     const imdbId = award["imdb.id"];
@@ -16,14 +17,31 @@ function BuildGraph(films, runs, festivals, awards, general) {
     });
   });
 
+  runs.forEach((run) => {
+    const imdbId = run["unique.id"];
+
+    if (!runInfoByImdb.has(imdbId)) {
+      runInfoByImdb.set(imdbId, {
+        releaseTypes: new Set(),
+        genderTeam: new Set(),
+        connections: 0,
+      });
+    }
+    const info = runInfoByImdb.get(imdbId);
+    if (+run["thr"] === 1) info.releaseTypes.add("Theatrical");
+    if (+run["digital"] === 1) info.releaseTypes.add("Digital");
+    if (+run["tv"] === 1) info.releaseTypes.add("Television");
+    if (+run["dvd"] === 1) info.releaseTypes.add("DVD");
+    info.genderTeam.add(run["gender.team"]);
+    info.connections += 1;
+  });
+
   general.forEach((info) => {
     const imdbId = info["imdb.id"];
 
-    if (!generalByImdb.has(imdbId)) {
-      generalByImdb.set(imdbId, []);
-    }
+    if (!imdbId || imdbId === "NA") return;
 
-    generalByImdb.get(imdbId).push({
+    generalByImdb.set(imdbId, {
       languages: info["languages"],
       genres: info["genres"],
       rating: info["rating"],
@@ -35,6 +53,13 @@ function BuildGraph(films, runs, festivals, awards, general) {
   });
 
   films.forEach((film) => {
+    const generalInfo = generalByImdb.get(film["imdb.id"]) || {};
+    const runInfo = runInfoByImdb.get(film["unique.id"]) || {
+      releaseTypes: new Set(),
+      genderTeam: new Set(),
+      connections: 0,
+    };
+
     filmNodes.set(`film_${film["unique.id"]}`, {
       id: `film_${film["unique.id"]}`,
       type: "film",
@@ -72,6 +97,19 @@ function BuildGraph(films, runs, festivals, awards, general) {
           (awardsByImdb.get(film["imdb.id"]) || []).map((award) => award.award),
         ),
       ],
+      languages: generalInfo.languages || "",
+      genres: generalInfo.genres || "",
+      rating: +generalInfo.rating || 0,
+      budget: generalInfo.budget || "",
+      openingusa: generalInfo.openingusa || "",
+      grossusa: generalInfo.grossusa || "",
+      grossworld: generalInfo.grossworld || "",
+
+      releaseTypes: [...runInfo.releaseTypes],
+
+      genderTeam: [...runInfo.genderTeam],
+
+      connections: runInfo.connections,
 
       group: "film",
     });
@@ -103,7 +141,8 @@ function BuildGraph(films, runs, festivals, awards, general) {
   const links = [];
 
   runs.forEach((run) => {
-    const source = `film_${run["unique.id"]}`;
+    const imdbId = run["unique.id"];
+    const source = `film_${imdbId}`;
     const target = run["festival.id"];
 
     if (!filmNodes.has(source) || !festivalNodes.has(target)) {
