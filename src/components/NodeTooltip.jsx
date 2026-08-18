@@ -4,14 +4,30 @@ function NodeTooltip({ node }) {
   return (
     <div className="tooltip">
       <h3>{node.type}</h3>
-      {node.title && <p>Title: {node.title}</p>}
-      {node.label && <p>Festival: {node.label}</p>}
-      {node.year && <p>Year: {node.year}</p>}
+      {node.title && (
+        <p>
+          <b>Title:</b> {node.title}
+        </p>
+      )}
+      {node.label && (
+        <p>
+          <b>Festival:</b> {node.label}
+        </p>
+      )}
+      {node.year && (
+        <p>
+          <b>Year:</b> {node.year}
+        </p>
+      )}
       {node.country && node.type === "film" && (
-        <p>Countries: {node.country.join(", ")}</p>
+        <p>
+          <b>Countries:</b> {node.country.join(", ")}
+        </p>
       )}
       {node.country && node.type === "festival" && (
-        <p>Country: {node.country.join(", ")}</p>
+        <p>
+          <b>Country:</b> {node.country.join(", ")}
+        </p>
       )}
       {node.city && <p>City: {node.city.join(", ")}</p>}
       {node.runtime && <p>Runtime: {node.runtime} minutes</p>}
@@ -26,7 +42,16 @@ function NodeTooltip({ node }) {
       {node.director?.length > 0 && (
         <p>Directors: {node.director.join(", ")}</p>
       )}
-      {node.awards?.length > 0 && <p>Awards: {node.awards.join(", ")}</p>}
+      {node.awards?.length > 0 && (
+        <p>
+          <b>Awards</b>
+          {node.awards.map((award, i) => (
+            <span key={i}>
+              <br />-{award}
+            </span>
+          ))}
+        </p>
+      )}
       {node.languages && <p>Languages: {node.languages}</p>}
       {node.genres && <p>Genres: {node.genres}</p>}
       {node.rating && <p>Rating: {node.rating}</p>}
