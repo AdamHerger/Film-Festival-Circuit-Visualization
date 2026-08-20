@@ -1,3 +1,4 @@
+import CurrencyConverter from "./currencyConverter";
 function BuildGraph(films, runs, festivals, awards, general) {
   const filmNodes = new Map();
   const festivalNodes = new Map();
@@ -102,10 +103,11 @@ function BuildGraph(films, runs, festivals, awards, general) {
         : ["NA"],
       genres: generalInfo.genres ? generalInfo.genres.split(" | ") : ["NA"],
       rating: +generalInfo.rating || 0,
-      budget: generalInfo.budget || "",
-      openingusa: generalInfo.openingusa || "",
-      grossusa: generalInfo.grossusa || "",
-      grossworld: generalInfo.grossworld || "",
+
+      budget: CurrencyConverter(generalInfo.budget),
+      openingusa: CurrencyConverter(generalInfo.openingusa),
+      grossusa: CurrencyConverter(generalInfo.grossusa),
+      grossworld: CurrencyConverter(generalInfo.grossworld),
 
       releaseTypes: [...runInfo.releaseTypes],
 

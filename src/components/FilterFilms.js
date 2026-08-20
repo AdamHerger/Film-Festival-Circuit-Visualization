@@ -32,6 +32,18 @@ function FilterFilms(graph, filters) {
     if (film.rating < filters.minRating || film.rating > filters.maxRating)
       return false;
 
+    // money filters
+    if (filters.includeNA) {
+      if (
+        film.budget >= 0 &&
+        (film.budget < filters.minBudget || film.budget > filters.maxBudget)
+      )
+        return false;
+    } else {
+      if (film.budget < filters.minBudget || film.budget > filters.maxBudget)
+        return false;
+    }
+
     if (filters.country.length > 0) {
       const hasAllSelectedCountries = filters.country.every((selectedCountry) =>
         film.country.some(

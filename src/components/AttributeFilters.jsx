@@ -138,6 +138,7 @@ function AttributeFilters({
               label="Production Year"
               minval={1900}
               maxval={2026}
+              step={1}
               value1="minYear"
               value2="maxYear"
               filters={filters}
@@ -152,6 +153,7 @@ function AttributeFilters({
               label="Runtime"
               minval={0}
               maxval={800}
+              step={1}
               value1="minRuntime"
               value2="maxRuntime"
               filters={filters}
@@ -166,8 +168,43 @@ function AttributeFilters({
               label="Connections"
               minval={1}
               maxval={200}
+              step={1}
               value1="minConnections"
               value2="maxConnections"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+        </div>
+        <br />
+        <div className="filter-box">
+          <div className="filter-component">
+            <RangeSliderFilter
+              label="Rating"
+              minval={0}
+              maxval={10}
+              step={0.1}
+              value1="minRating"
+              value2="maxRating"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+        </div>
+        <br />
+        <div className="filter-component">
+          <InputBoxFilter
+            label="Budget"
+            value1="minBudget"
+            value2="maxBudget"
+            filters={filters}
+            setFilters={setFilters}
+          />
+          <br />
+          <div className="filter-component">
+            <CheckBoxFilter
+              label="Include NA Values"
+              attribute="includeNA"
               filters={filters}
               setFilters={setFilters}
             />

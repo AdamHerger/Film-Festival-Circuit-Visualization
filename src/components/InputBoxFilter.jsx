@@ -1,15 +1,27 @@
-function InputBoxFilter({ label, value, filters, setFilters }) {
+function InputBoxFilter({ label, value1, value2, filters, setFilters }) {
   return (
     <>
       <div>{label}</div>
 
       <input
-        type="text"
-        value={filters[value]}
+        type="number"
+        placeholder="Leave Blank For No Min"
+        value={null}
         onChange={(e) =>
           setFilters({
             ...filters,
-            [value]: e.target.value,
+            [value1]: e.target.value,
+          })
+        }
+      />
+      <input
+        type="number"
+        placeholder="Leave Blank For No Max"
+        value={null}
+        onChange={(e) =>
+          setFilters({
+            ...filters,
+            [value2]: e.target.value,
           })
         }
       />

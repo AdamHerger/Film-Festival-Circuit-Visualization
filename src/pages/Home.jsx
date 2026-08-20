@@ -39,6 +39,16 @@ function Home() {
     minRating: 0,
     maxRating: 10,
 
+    minBudget: 0,
+    maxBudget: 1000000000,
+    minOpeningUSA: 0,
+    maxOpeningUSA: 10000000,
+    minGrossWorld: 0,
+    maxGrossWorld: 10000000,
+    minGrossUSA: 0,
+    maxGrossUSA: 10000000,
+    includeNA: false,
+
     country: [],
     director: [],
     awards: [],

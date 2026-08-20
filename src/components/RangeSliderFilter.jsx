@@ -5,6 +5,7 @@ function RangeSliderFilter({
   label,
   minval,
   maxval,
+  step,
   value1,
   value2,
   filters,
@@ -21,6 +22,7 @@ function RangeSliderFilter({
           range
           min={minval}
           max={maxval}
+          step={step}
           value={[filters[value1], filters[value2]]}
           onChange={(e) =>
             setFilters({

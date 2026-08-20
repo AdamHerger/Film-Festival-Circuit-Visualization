@@ -55,10 +55,50 @@ function NodeTooltip({ node }) {
       )}
       {node.genres?.length > 0 && <p>Genres: {node.genres.join(", ")}</p>}
       {node.rating && <p>Rating: {node.rating}</p>}
-      {node.budget && <p>Budget: {node.budget}</p>}
-      {node.openingusa && <p>Opening USA: {node.openingusa}</p>}
-      {node.grossusa && <p>Gross USA: {node.grossusa}</p>}
-      {node.grossworld && <p>Gross World: {node.grossworld}</p>}
+      {node.budget && node.budget !== -1 ? (
+        <p>
+          Budget:{" "}
+          {node.budget.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          })}
+        </p>
+      ) : (
+        <p>Budget: NA</p>
+      )}
+      {node.openingusa && node.openingusa !== -1 ? (
+        <p>
+          Opening USA:{" "}
+          {node.openingusa.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          })}
+        </p>
+      ) : (
+        <p>Opening USA: NA</p>
+      )}
+      {node.grossusa && node.grossusa !== -1 ? (
+        <p>
+          Gross USA:{" "}
+          {node.grossusa.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          })}
+        </p>
+      ) : (
+        <p>Gross USA: NA</p>
+      )}
+      {node.grossworld && node.grossworld !== -1 ? (
+        <p>
+          Gross World:{" "}
+          {node.grossworld.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          })}
+        </p>
+      ) : (
+        <p>Gross World: NA</p>
+      )}{" "}
     </div>
   );
 }
