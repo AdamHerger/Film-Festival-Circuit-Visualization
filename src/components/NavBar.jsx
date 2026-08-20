@@ -7,8 +7,8 @@ function NavBar() {
         <Link to="/" className="nav-link">
           Home
         </Link>
-        <Link to="/favorites" className="nav-link">
-          Favorites
+        <Link to="/about" className="nav-link">
+          About
         </Link>
       </div>
     </nav>

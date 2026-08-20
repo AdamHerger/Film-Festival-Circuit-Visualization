@@ -12,6 +12,7 @@ function Home() {
   const [awards, setAwards] = useState([]);
   const [general, setGeneral] = useState([]);
   const [festivals, setFestivals] = useState([]);
+  const [graph, setGraph] = useState(null);
   const [graphData, setGraphData] = useState(null);
 
   const [filters, setFilters] = useState({
@@ -33,10 +34,16 @@ function Home() {
     maxYear: 2026,
     minRuntime: 0,
     maxRuntime: 1000,
+    minConnections: 1,
+    maxConnections: 200,
+    minRating: 0,
+    maxRating: 10,
 
     country: [],
     director: [],
     awards: [],
+    languages: [],
+    genres: [],
   });
 
   const [repel, setRepel] = useState(15);
@@ -55,13 +62,16 @@ function Home() {
       setFestivals(festivals);
       setAwards(awards);
       setGeneral(general);
+
+      const fullGraph = BuildGraph(films, runs, festivals, awards, general);
+      setGraph(fullGraph);
     });
   }, []);
 
   const runSimulation = () => {
-    const filteredFilms = FilterFilms(films, filters, awards, general);
-    const graph = BuildGraph(filteredFilms, runs, festivals, awards, general);
-    setGraphData(graph);
+    if (!graph) return;
+    const filteredGraph = FilterFilms(graph, filters);
+    setGraphData(filteredGraph);
   };
 
   return (
@@ -97,6 +107,8 @@ function Home() {
             setFilters={setFilters}
             films={films}
             awards={awards}
+            runs={runs}
+            general={general}
           />
         </div>
       </div>

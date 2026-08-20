@@ -1,99 +1,128 @@
-function FilterFilms(films, filters, awards) {
-  const awardsByImdb = new Map();
+function FilterFilms(graph, filters) {
+  const filmNodes = graph.nodes.filter((node) => node.type === "film");
 
-  awards.forEach((award) => {
-    const imdbId = award["imdb.id"];
+  const filteredFilms = filmNodes.filter((film) => {
+    if (filters.documentaryOnly && !film.genre.includes("Documentary"))
+      return false;
+    if (filters.fictOnly && !film.genre.includes("Fiction")) return false;
+    if (filters.expOnly && !film.genre.includes("Experimental")) return false;
+    if (filters.animtOnly && !film.genre.includes("Animation")) return false;
+    if (filters.lgbtqOnly && !film.genre.includes("LGBTQ+")) return false;
 
-    if (!awardsByImdb.has(imdbId)) {
-      awardsByImdb.set(imdbId, []);
-    }
+    if (filters.MENA && !film.region.includes("MENA")) return false;
+    if (filters.africa && !film.region.includes("Africa")) return false;
+    if (filters.asia && !film.region.includes("Asia")) return false;
+    if (filters.na && !film.region.includes("North America")) return false;
+    if (filters.eu && !film.region.includes("Europe")) return false;
+    if (filters.la && !film.region.includes("Latin America")) return false;
+    if (filters.ocean && !film.region.includes("Ocean")) return false;
 
-    awardsByImdb.get(imdbId).push(award["award"]);
-  });
+    if (film.year < filters.minYear || film.year > filters.maxYear)
+      return false;
 
-  return films.filter((film) => {
-    // categories
-    if (filters.documentaryOnly && +film.doc !== 1) return false;
-    if (filters.fictOnly && +film.fict !== 1) return false;
-    if (filters.expOnly && +film.exp !== 1) return false;
-    if (filters.animtOnly && +film.animt !== 1) return false;
-    if (filters.lgbtqOnly && film["lgbtq"] !== "LGBT*Q films") return false;
-
-    // regions
-    if (filters.MENA && +film["regions.mena"] !== 1) return false;
-    if (filters.africa && +film["regions.africa"] !== 1) return false;
-    if (filters.asia && +film["regions.asia"] !== 1) return false;
-    if (filters.na && +film["regions.na"] !== 1) return false;
-    if (filters.eu && +film["regions.eu"] !== 1) return false;
-    if (filters.la && +film["regions.la"] !== 1) return false;
-    if (filters.ocean && +film["regions.ocean"] !== 1) return false;
-
-    const year = +film["prod.year"];
-
-    if (year < filters.minYear || year > filters.maxYear) return false;
+    if (film.runtime < filters.minRuntime || film.runtime > filters.maxRuntime)
+      return false;
 
     if (
-      +film["length.min"] < filters.minRuntime ||
-      +film["length.min"] > filters.maxRuntime
+      film.connections < filters.minConnections ||
+      film.connections > filters.maxConnections
     )
       return false;
 
-    // country filter
-    const filmCountries = Array.from(
-      { length: 7 },
-      (_, i) => film[`prod.country.${i + 1}.en`],
-    ).filter((country) => country && country !== "NA");
+    if (film.rating < filters.minRating || film.rating > filters.maxRating)
+      return false;
 
     if (filters.country.length > 0) {
       const hasAllSelectedCountries = filters.country.every((selectedCountry) =>
-        filmCountries.some(
+        film.country.some(
           (filmCountry) =>
             filmCountry.toLowerCase() === selectedCountry.toLowerCase(),
         ),
       );
 
-      if (!hasAllSelectedCountries) {
-        return false;
-      }
+      if (!hasAllSelectedCountries) return false;
     }
-
-    // director filter
-    const filmDirectors = Array.from(
-      { length: 26 },
-      (_, i) => film[`director.${i + 1}`],
-    ).filter((director) => director && director !== "NA");
 
     if (filters.director.length > 0) {
       const hasAllSelectedDirectors = filters.director.every(
         (selectedDirector) =>
-          filmDirectors.some(
+          film.director.some(
             (filmDirector) =>
               filmDirector.toLowerCase() === selectedDirector.toLowerCase(),
           ),
       );
 
-      if (!hasAllSelectedDirectors) {
-        return false;
-      }
+      if (!hasAllSelectedDirectors) return false;
     }
-
-    const filmAwards = awardsByImdb.get(film["imdb.id"]) || [];
 
     if (filters.awards.length > 0) {
       const hasAllSelectedAwards = filters.awards.every((selectedAward) =>
-        filmAwards.some(
+        film.awards.some(
           (filmAward) =>
             filmAward.toLowerCase() === selectedAward.toLowerCase(),
         ),
       );
 
-      if (!hasAllSelectedAwards) {
-        return false;
-      }
+      if (!hasAllSelectedAwards) return false;
+    }
+
+    if (filters.languages.length > 0) {
+      const hasAllSelectedLanguages = filters.languages.every(
+        (selectedLanguage) =>
+          film.languages.some(
+            (filmLanguage) =>
+              filmLanguage.toLowerCase() === selectedLanguage.toLowerCase(),
+          ),
+      );
+
+      if (!hasAllSelectedLanguages) return false;
+    }
+
+    if (filters.genres.length > 0) {
+      const hasAllSelectedGenres = filters.genres.every((selectedGenre) =>
+        film.genres.some(
+          (filmGenre) =>
+            filmGenre.toLowerCase() === selectedGenre.toLowerCase(),
+        ),
+      );
+
+      if (!hasAllSelectedGenres) return false;
     }
 
     return true;
   });
+
+  const filteredFilmIds = new Set(filteredFilms.map((film) => film.id));
+
+  const filteredLinks = graph.links.filter((link) => {
+    const sourceId =
+      typeof link.source === "object" ? link.source.id : link.source;
+
+    return filteredFilmIds.has(sourceId);
+  });
+
+  const connectedFestivalIds = new Set(
+    filteredLinks.map((link) => {
+      return typeof link.target === "object" ? link.target.id : link.target;
+    }),
+  );
+
+  const filteredNodes = graph.nodes.filter((node) => {
+    if (node.type === "film") {
+      return filteredFilmIds.has(node.id);
+    }
+
+    if (node.type === "festival") {
+      return connectedFestivalIds.has(node.id);
+    }
+
+    return false;
+  });
+
+  return {
+    nodes: filteredNodes,
+    links: filteredLinks,
+  };
 }
 
 export default FilterFilms;

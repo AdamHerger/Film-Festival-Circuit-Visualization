@@ -97,8 +97,10 @@ function BuildGraph(films, runs, festivals, awards, general) {
           (awardsByImdb.get(film["imdb.id"]) || []).map((award) => award.award),
         ),
       ],
-      languages: generalInfo.languages || "",
-      genres: generalInfo.genres || "",
+      languages: generalInfo.languages
+        ? generalInfo.languages.split(" | ")
+        : ["NA"],
+      genres: generalInfo.genres ? generalInfo.genres.split(" | ") : ["NA"],
       rating: +generalInfo.rating || 0,
       budget: generalInfo.budget || "",
       openingusa: generalInfo.openingusa || "",

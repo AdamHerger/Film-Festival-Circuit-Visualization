@@ -19,26 +19,24 @@ function NodeTooltip({ node }) {
           <b>Year:</b> {node.year}
         </p>
       )}
-      {node.country && node.type === "film" && (
+      {node.country && node.country.length > 1 && (
         <p>
           <b>Countries:</b> {node.country.join(", ")}
         </p>
       )}
-      {node.country && node.type === "festival" && (
+      {node.country && node.country.length === 1 && (
         <p>
           <b>Country:</b> {node.country.join(", ")}
         </p>
       )}
       {node.city && <p>City: {node.city.join(", ")}</p>}
       {node.runtime && <p>Runtime: {node.runtime} minutes</p>}
-      {node.genre?.length > 0 && <p>Genre: {node.genre.join(", ")}</p>}
+      {node.genre?.length > 0 && <p>Category: {node.genre.join(", ")}</p>}
       {node.region?.length > 0 && <p>Region: {node.region.join(", ")}</p>}
       {node.connections && <p>Connections: {node.connections}</p>}
-
       {node.releaseTypes?.length > 0 && (
         <p>Release Types: {node.releaseTypes.join(", ")}</p>
       )}
-
       {node.director?.length > 0 && (
         <p>Directors: {node.director.join(", ")}</p>
       )}
@@ -52,8 +50,10 @@ function NodeTooltip({ node }) {
           ))}
         </p>
       )}
-      {node.languages && <p>Languages: {node.languages}</p>}
-      {node.genres && <p>Genres: {node.genres}</p>}
+      {node.languages?.length > 0 && (
+        <p>Languages: {node.languages.join(", ")}</p>
+      )}
+      {node.genres?.length > 0 && <p>Genres: {node.genres.join(", ")}</p>}
       {node.rating && <p>Rating: {node.rating}</p>}
       {node.budget && <p>Budget: {node.budget}</p>}
       {node.openingusa && <p>Opening USA: {node.openingusa}</p>}

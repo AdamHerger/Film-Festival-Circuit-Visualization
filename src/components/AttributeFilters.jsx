@@ -6,8 +6,15 @@ import { getUniqueOptions } from "./FilterOptions";
 
 import { useMemo } from "react";
 
-function AttributeFilters({ filters, setFilters, films, awards, general }) {
-  // stored attributes
+function AttributeFilters({
+  filters,
+  setFilters,
+  films,
+  awards,
+  general,
+  runs,
+}) {
+  //stored attributes
   const countryOptions = useMemo(
     () =>
       getUniqueOptions(
@@ -41,6 +48,40 @@ function AttributeFilters({ filters, setFilters, films, awards, general }) {
           label: award,
         })),
     [awards],
+  );
+
+  const languageOptions = useMemo(
+    () =>
+      [
+        ...new Set(
+          general
+            .flatMap((film) =>
+              typeof film.languages === "string" && film.languages !== "NA"
+                ? film.languages.split(" | ")
+                : [],
+            )
+            .map((language) => language.trim())
+            .filter(Boolean),
+        ),
+      ].sort(),
+    [general],
+  );
+
+  const genreOptions = useMemo(
+    () =>
+      [
+        ...new Set(
+          general
+            .flatMap((film) =>
+              typeof film.genres === "string" && film.genres !== "NA"
+                ? film.genres.split(" | ")
+                : [],
+            )
+            .map((genre) => genre.trim())
+            .filter(Boolean),
+        ),
+      ].sort(),
+    [general],
   );
 
   return (
@@ -121,10 +162,49 @@ function AttributeFilters({ filters, setFilters, films, awards, general }) {
         <br />
         <div className="filter-box">
           <div className="filter-component">
+            <RangeSliderFilter
+              label="Connections"
+              minval={1}
+              maxval={200}
+              value1="minConnections"
+              value2="maxConnections"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+        </div>
+        <br />
+        <div className="filter-box">
+          <div className="filter-component">
             <DropdownFilter
               label="Production Country"
               value="country"
               options={countryOptions}
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+        </div>
+
+        <br />
+        <div className="filter-box">
+          <div className="filter-component">
+            <DropdownFilter
+              label="Languages"
+              value="languages"
+              options={languageOptions}
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+        </div>
+        <br />
+        <div className="filter-box">
+          <div className="filter-component">
+            <DropdownFilter
+              label="Genres"
+              value="genres"
+              options={genreOptions}
               filters={filters}
               setFilters={setFilters}
             />
