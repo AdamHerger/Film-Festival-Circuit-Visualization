@@ -94,6 +94,7 @@
 
 .range-slider {
   width: 100%;
+  padding-top: 5px;
 }
 
 .home {
@@ -128,6 +129,8 @@
 .filter-component {
   text-align: center;
   padding: 0px 30px;
+  display: flexbox;
+  justify-items: center;
 }
 
 .filter-box {
@@ -208,4 +211,10 @@
 }
 .input-field {
   text-align: center;
+}
+
+.distribution-graph {
+  display: block;
+  padding: 10px;
+  border: 1px solid white;
 }

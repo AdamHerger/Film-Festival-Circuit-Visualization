@@ -138,6 +138,7 @@ function AttributeFilters({
           <div className="filter-component">
             <RangeSliderFilter
               label="Production Year"
+              attribute="year"
               minval={1900}
               maxval={2026}
               step={1}
@@ -145,6 +146,7 @@ function AttributeFilters({
               value2="maxYear"
               filters={filters}
               setFilters={setFilters}
+              graph={graph}
             />
           </div>
         </div>
@@ -153,6 +155,7 @@ function AttributeFilters({
           <div className="filter-component">
             <RangeSliderFilter
               label="Runtime"
+              attribute="runtime"
               minval={0}
               maxval={800}
               step={1}
@@ -160,6 +163,7 @@ function AttributeFilters({
               value2="maxRuntime"
               filters={filters}
               setFilters={setFilters}
+              graph={graph}
             />
           </div>
         </div>
@@ -168,13 +172,15 @@ function AttributeFilters({
           <div className="filter-component">
             <RangeSliderFilter
               label="Connections"
+              attribute="connections"
               minval={1}
-              maxval={200}
+              maxval={150}
               step={1}
               value1="minConnections"
               value2="maxConnections"
               filters={filters}
               setFilters={setFilters}
+              graph={graph}
             />
           </div>
         </div>
@@ -183,6 +189,7 @@ function AttributeFilters({
           <div className="filter-component">
             <RangeSliderFilter
               label="Rating"
+              attribute="rating"
               minval={0}
               maxval={10}
               step={0.1}
@@ -190,6 +197,7 @@ function AttributeFilters({
               value2="maxRating"
               filters={filters}
               setFilters={setFilters}
+              graph={graph}
             />
           </div>
         </div>
@@ -198,10 +206,12 @@ function AttributeFilters({
           <div className="filter-component">
             <InputBoxFilter
               label="Budget"
+              attribute="budget"
               value1="minBudget"
               value2="maxBudget"
               filters={filters}
               setFilters={setFilters}
+              graph={graph}
             />
             <br />
             <div className="filter-component">
@@ -218,10 +228,12 @@ function AttributeFilters({
           <div className="filter-component">
             <InputBoxFilter
               label="Opening USA"
+              attribute="openingusa"
               value1="minOpeningUSA"
               value2="maxOpeningUSA"
               filters={filters}
               setFilters={setFilters}
+              graph={graph}
             />
             <br />
             <div className="filter-component">
@@ -238,10 +250,12 @@ function AttributeFilters({
           <div className="filter-component">
             <InputBoxFilter
               label="Gross USA"
+              attribute="grossusa"
               value1="minGrossUSA"
               value2="maxGrossUSA"
               filters={filters}
               setFilters={setFilters}
+              graph={graph}
             />
             <br />
             <div className="filter-component">
@@ -258,10 +272,12 @@ function AttributeFilters({
           <div className="filter-component">
             <InputBoxFilter
               label="Gross World"
+              attribute="grossworld"
               value1="minGrossWorld"
               value2="maxGrossWorld"
               filters={filters}
               setFilters={setFilters}
+              graph={graph}
             />
             <br />
             <div className="filter-component">

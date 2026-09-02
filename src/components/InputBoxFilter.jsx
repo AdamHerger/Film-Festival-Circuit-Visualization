@@ -1,4 +1,14 @@
-function InputBoxFilter({ label, value1, value2, filters, setFilters }) {
+import DistributionGraph from "./DistributionGraph";
+
+function InputBoxFilter({
+  label,
+  attribute,
+  value1,
+  value2,
+  filters,
+  setFilters,
+  graph,
+}) {
   return (
     <>
       <div>{label}</div>
@@ -26,6 +36,12 @@ function InputBoxFilter({ label, value1, value2, filters, setFilters }) {
             [value2]: e.target.value,
           })
         }
+      />
+      <DistributionGraph
+        data={graph}
+        attribute={attribute}
+        min={filters[value1]}
+        max={filters[value2]}
       />
     </>
   );

@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import AttributeFilters from "../components/AttributeFilters";
 import FilterFilms from "../components/FilterFilms";
 import SingleRangeSlider from "../components/SingleRangeSlider";
-
 function Home() {
   const [films, setFilms] = useState([]);
   const [runs, setRuns] = useState([]);
@@ -35,7 +34,7 @@ function Home() {
     minRuntime: 0,
     maxRuntime: 1000,
     minConnections: 1,
-    maxConnections: 200,
+    maxConnections: 150,
     minRating: 0,
     maxRating: 10,
 
@@ -81,7 +80,12 @@ function Home() {
   const runSimulation = () => {
     if (!graph) return;
     const filteredGraph = FilterFilms(graph, filters);
-    setGraphData(filteredGraph);
+    const clonedGraph = {
+      nodes: filteredGraph.nodes.map((node) => ({ ...node })),
+      links: filteredGraph.links.map((link) => ({ ...link })),
+    };
+
+    setGraphData(clonedGraph);
   };
 
   return (

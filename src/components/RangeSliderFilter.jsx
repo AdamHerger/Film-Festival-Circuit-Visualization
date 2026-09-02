@@ -1,8 +1,10 @@
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import DistributionGraph from "./DistributionGraph";
 
 function RangeSliderFilter({
   label,
+  attribute,
   minval,
   maxval,
   step,
@@ -10,6 +12,7 @@ function RangeSliderFilter({
   value2,
   filters,
   setFilters,
+  graph,
 }) {
   return (
     <>
@@ -17,8 +20,15 @@ function RangeSliderFilter({
       <label className="slider-label">
         {filters[value1]} - {filters[value2]}
       </label>
+      <DistributionGraph
+        data={graph}
+        attribute={attribute}
+        min={filters[value1]}
+        max={filters[value2]}
+      />
       <div className="range-slider">
         <Slider
+          className="slider"
           range
           min={minval}
           max={maxval}
