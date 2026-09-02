@@ -3,7 +3,10 @@ function NodeTooltip({ node }) {
   const ReleaseTypes = [];
   return (
     <div className="tooltip">
-      <h3>{node.type}</h3>
+      <p>
+        <b>Type: </b>
+        {node.type}
+      </p>
       {node.title && (
         <p>
           <b>Title:</b> {node.title}
@@ -29,16 +32,40 @@ function NodeTooltip({ node }) {
           <b>Country:</b> {node.country.join(", ")}
         </p>
       )}
-      {node.city && <p>City: {node.city.join(", ")}</p>}
-      {node.runtime && <p>Runtime: {node.runtime} minutes</p>}
-      {node.genre?.length > 0 && <p>Category: {node.genre.join(", ")}</p>}
-      {node.region?.length > 0 && <p>Region: {node.region.join(", ")}</p>}
-      {node.connections && <p>Connections: {node.connections}</p>}
+      {node.city && (
+        <p>
+          <b>City:</b> {node.city.join(", ")}
+        </p>
+      )}
+      {node.runtime && (
+        <p>
+          <b>Runtime:</b> {node.runtime} minutes
+        </p>
+      )}
+      {node.genre?.length > 0 && (
+        <p>
+          <b>Category:</b> {node.genre.join(", ")}
+        </p>
+      )}
+      {node.region?.length > 0 && (
+        <p>
+          <b>Region:</b> {node.region.join(", ")}
+        </p>
+      )}
+      {node.connections && (
+        <p>
+          <b>Connections:</b> {node.connections}
+        </p>
+      )}
       {node.releaseTypes?.length > 0 && (
-        <p>Release Types: {node.releaseTypes.join(", ")}</p>
+        <p>
+          <b>Release Types:</b> {node.releaseTypes.join(", ")}
+        </p>
       )}
       {node.director?.length > 0 && (
-        <p>Directors: {node.director.join(", ")}</p>
+        <p>
+          <b>Directors:</b> {node.director.join(", ")}
+        </p>
       )}
       {node.awards?.length > 0 && (
         <p>
@@ -51,53 +78,72 @@ function NodeTooltip({ node }) {
         </p>
       )}
       {node.languages?.length > 0 && (
-        <p>Languages: {node.languages.join(", ")}</p>
+        <p>
+          <b>Languages:</b> {node.languages.join(", ")}
+        </p>
       )}
-      {node.genres?.length > 0 && <p>Genres: {node.genres.join(", ")}</p>}
-      {node.rating && <p>Rating: {node.rating}</p>}
+      {node.genres?.length > 0 && (
+        <p>
+          <b>Genres:</b> {node.genres.join(", ")}
+        </p>
+      )}
+      {node.rating && (
+        <p>
+          <b>Rating: </b>
+          {node.rating}
+        </p>
+      )}
       {node.budget && node.budget !== -1 ? (
         <p>
-          Budget:{" "}
+          <b>Budget:</b>{" "}
           {node.budget.toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
           })}
         </p>
       ) : (
-        <p>Budget: NA</p>
+        <p>
+          <b>Budget: </b> NA
+        </p>
       )}
       {node.openingusa && node.openingusa !== -1 ? (
         <p>
-          Opening USA:{" "}
+          <b>Opening USA: </b>
           {node.openingusa.toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
           })}
         </p>
       ) : (
-        <p>Opening USA: NA</p>
+        <p>
+          <b>Opening USA:</b> NA
+        </p>
       )}
       {node.grossusa && node.grossusa !== -1 ? (
         <p>
-          Gross USA:{" "}
+          <b>Gross USA: </b>
           {node.grossusa.toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
           })}
         </p>
       ) : (
-        <p>Gross USA: NA</p>
+        <p>
+          <b>Gross USA:</b> NA
+        </p>
       )}
       {node.grossworld && node.grossworld !== -1 ? (
         <p>
-          Gross World:{" "}
+          <b>Gross World: </b>
           {node.grossworld.toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
           })}
         </p>
       ) : (
-        <p>Gross World: NA</p>
+        <p>
+          <b>Gross World:</b> NA
+        </p>
       )}{" "}
     </div>
   );

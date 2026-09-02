@@ -2,103 +2,76 @@ function FilterFilms(graph, filters) {
   const filmNodes = graph.nodes.filter((node) => node.type === "film");
 
   const filteredFilms = filmNodes.filter((film) => {
-    if (filters.documentaryOnly && !film.genre.includes("Documentary"))
-      return false;
-    if (filters.fictOnly && !film.genre.includes("Fiction")) return false;
-    if (filters.expOnly && !film.genre.includes("Experimental")) return false;
-    if (filters.animtOnly && !film.genre.includes("Animation")) return false;
-    if (filters.lgbtqOnly && !film.genre.includes("LGBTQ+")) return false;
+    const singleFilters = [
+      ["documentaryOnly", "Documentary", "genre"],
+      ["fictOnly", "Fiction", "genre"],
+      ["expOnly", "Experimental", "genre"],
+      ["animtOnly", "Animation", "genre"],
+      ["lgbtqOnly", "LGBTQ+", "genre"],
+      ["MENA", "MENA", "region"],
+      ["africa", "Africa", "region"],
+      ["asia", "Asia", "region"],
+      ["na", "North America", "region"],
+      ["eu", "Europe", "region"],
+      ["la", "Latin America", "region"],
+      ["ocean", "Ocean", "region"],
+    ];
 
-    if (filters.MENA && !film.region.includes("MENA")) return false;
-    if (filters.africa && !film.region.includes("Africa")) return false;
-    if (filters.asia && !film.region.includes("Asia")) return false;
-    if (filters.na && !film.region.includes("North America")) return false;
-    if (filters.eu && !film.region.includes("Europe")) return false;
-    if (filters.la && !film.region.includes("Latin America")) return false;
-    if (filters.ocean && !film.region.includes("Ocean")) return false;
+    for (const [filter, title, type] of singleFilters) {
+      if (filters[filter] && !film[type].includes(title)) return false;
+    }
 
-    if (film.year < filters.minYear || film.year > filters.maxYear)
-      return false;
+    const rangeFilters = [
+      ["year", "minYear", "maxYear"],
+      ["runtime", "minRuntime", "maxRuntime"],
+      ["connections", "minConnections", "maxConnections"],
+      ["rating", "minRating", "maxRating"],
+    ];
 
-    if (film.runtime < filters.minRuntime || film.runtime > filters.maxRuntime)
-      return false;
-
-    if (
-      film.connections < filters.minConnections ||
-      film.connections > filters.maxConnections
-    )
-      return false;
-
-    if (film.rating < filters.minRating || film.rating > filters.maxRating)
-      return false;
-
-    // money filters
-    if (filters.includeNA) {
-      if (
-        film.budget >= 0 &&
-        (film.budget < filters.minBudget || film.budget > filters.maxBudget)
-      )
-        return false;
-    } else {
-      if (film.budget < filters.minBudget || film.budget > filters.maxBudget)
+    for (const [attribute, min, max] of rangeFilters) {
+      if (film[attribute] < filters[min] || film[attribute] > filters[max])
         return false;
     }
 
-    if (filters.country.length > 0) {
-      const hasAllSelectedCountries = filters.country.every((selectedCountry) =>
-        film.country.some(
-          (filmCountry) =>
-            filmCountry.toLowerCase() === selectedCountry.toLowerCase(),
-        ),
-      );
+    const moneyFilters = [
+      ["budget", "minBudget", "maxBudget"],
+      ["openingusa", "minOpeningUSA", "maxOpeningUSA"],
+      ["grossusa", "minGrossUSA", "maxGrossUSA"],
+      ["grossworld", "minGrossWorld", "maxGrossWorld"],
+    ];
 
-      if (!hasAllSelectedCountries) return false;
+    for (const [attribute, minFilter, maxFilter] of moneyFilters) {
+      const value = film[attribute];
+      const includeNA = filters.includeNA.get(attribute) ?? true;
+
+      if (value < 0) {
+        if (!includeNA) return false;
+        continue;
+      }
+
+      if (value < filters[minFilter] || value > filters[maxFilter]) {
+        return false;
+      }
     }
 
-    if (filters.director.length > 0) {
-      const hasAllSelectedDirectors = filters.director.every(
-        (selectedDirector) =>
-          film.director.some(
-            (filmDirector) =>
-              filmDirector.toLowerCase() === selectedDirector.toLowerCase(),
+    const dropDownFilters = [
+      ["country"],
+      ["director"],
+      ["awards"],
+      ["languages"],
+      ["genres"],
+    ];
+
+    for (const [attribute] of dropDownFilters) {
+      if (filters[attribute].length > 0) {
+        const hasAllSelected = filters[attribute].every((selected) =>
+          film[attribute].some(
+            (element) => element.toLowerCase() === selected.toLowerCase(),
           ),
-      );
+        );
 
-      if (!hasAllSelectedDirectors) return false;
-    }
-
-    if (filters.awards.length > 0) {
-      const hasAllSelectedAwards = filters.awards.every((selectedAward) =>
-        film.awards.some(
-          (filmAward) =>
-            filmAward.toLowerCase() === selectedAward.toLowerCase(),
-        ),
-      );
-
-      if (!hasAllSelectedAwards) return false;
-    }
-
-    if (filters.languages.length > 0) {
-      const hasAllSelectedLanguages = filters.languages.every(
-        (selectedLanguage) =>
-          film.languages.some(
-            (filmLanguage) =>
-              filmLanguage.toLowerCase() === selectedLanguage.toLowerCase(),
-          ),
-      );
-
-      if (!hasAllSelectedLanguages) return false;
-    }
-
-    if (filters.genres.length > 0) {
-      const hasAllSelectedGenres = filters.genres.every((selectedGenre) =>
-        film.genres.some(
-          (filmGenre) =>
-            filmGenre.toLowerCase() === selectedGenre.toLowerCase(),
-        ),
-      );
-
-      if (!hasAllSelectedGenres) return false;
+        if (!hasAllSelected) return false;
+      }
     }
 
     return true;

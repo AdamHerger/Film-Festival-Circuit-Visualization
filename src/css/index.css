@@ -65,11 +65,10 @@
 
 .tooltip {
   border: 1px solid white;
-  flex: 0 0 250px;
+  flex: 0 0 20%;
   min-height: 0;
   text-align: left;
-  padding: 10px;
-  width: 250px;
+  padding: 0px 10px;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
@@ -205,5 +204,8 @@
 }
 
 .about-page {
+  text-align: center;
+}
+.input-field {
   text-align: center;
 }

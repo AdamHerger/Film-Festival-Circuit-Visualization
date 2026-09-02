@@ -42,12 +42,12 @@ function Home() {
     minBudget: 0,
     maxBudget: 1000000000,
     minOpeningUSA: 0,
-    maxOpeningUSA: 10000000,
+    maxOpeningUSA: 1000000000,
     minGrossWorld: 0,
-    maxGrossWorld: 10000000,
+    maxGrossWorld: 1000000000,
     minGrossUSA: 0,
-    maxGrossUSA: 10000000,
-    includeNA: false,
+    maxGrossUSA: 1000000000,
+    includeNA: new Map(),
 
     country: [],
     director: [],
@@ -119,6 +119,7 @@ function Home() {
             awards={awards}
             runs={runs}
             general={general}
+            graph={graph}
           />
         </div>
       </div>

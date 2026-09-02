@@ -4,6 +4,7 @@ function InputBoxFilter({ label, value1, value2, filters, setFilters }) {
       <div>{label}</div>
 
       <input
+        className="input-field"
         type="number"
         placeholder="Leave Blank For No Min"
         value={null}
@@ -15,6 +16,7 @@ function InputBoxFilter({ label, value1, value2, filters, setFilters }) {
         }
       />
       <input
+        className="input-field"
         type="number"
         placeholder="Leave Blank For No Max"
         value={null}

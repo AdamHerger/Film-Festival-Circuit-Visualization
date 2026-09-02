@@ -30,12 +30,17 @@ function NodeGraph({ data, repel, attract }) {
 
     const connectionCount = {};
     links.forEach((link) => {
-      connectionCount[link.source] = (connectionCount[link.source] || 0) + 1;
-      connectionCount[link.target] = (connectionCount[link.target] || 0) + 1;
+      const sourceId =
+        typeof link.source === "object" ? link.source.id : link.source;
+      const targetId =
+        typeof link.target === "object" ? link.target.id : link.target;
+      connectionCount[sourceId] = (connectionCount[sourceId] || 0) + 1;
+      connectionCount[targetId] = (connectionCount[targetId] || 0) + 1;
     });
     nodes.forEach((node) => {
       node.connections = connectionCount[node.id] || 0;
     });
+
     const radiusScale = d3
       .scaleLinear()
       .domain(d3.extent(nodes, (d) => d.connections))

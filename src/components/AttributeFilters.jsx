@@ -2,6 +2,7 @@ import CheckBoxFilter from "./CheckBoxFilter";
 import RangeSliderFilter from "./RangeSliderFilter";
 import InputBoxFilter from "./InputBoxFilter";
 import DropdownFilter from "./DropdownFilter";
+import IncludeNABox from "./IncludeNABox";
 import { getUniqueOptions } from "./FilterOptions";
 
 import { useMemo } from "react";
@@ -13,6 +14,7 @@ function AttributeFilters({
   awards,
   general,
   runs,
+  graph,
 }) {
   //stored attributes
   const countryOptions = useMemo(
@@ -192,22 +194,83 @@ function AttributeFilters({
           </div>
         </div>
         <br />
-        <div className="filter-component">
-          <InputBoxFilter
-            label="Budget"
-            value1="minBudget"
-            value2="maxBudget"
-            filters={filters}
-            setFilters={setFilters}
-          />
-          <br />
+        <div className="filter-box">
           <div className="filter-component">
-            <CheckBoxFilter
-              label="Include NA Values"
-              attribute="includeNA"
+            <InputBoxFilter
+              label="Budget"
+              value1="minBudget"
+              value2="maxBudget"
               filters={filters}
               setFilters={setFilters}
             />
+            <br />
+            <div className="filter-component">
+              <IncludeNABox
+                attribute="budget"
+                filters={filters}
+                setFilters={setFilters}
+              />
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="filter-box">
+          <div className="filter-component">
+            <InputBoxFilter
+              label="Opening USA"
+              value1="minOpeningUSA"
+              value2="maxOpeningUSA"
+              filters={filters}
+              setFilters={setFilters}
+            />
+            <br />
+            <div className="filter-component">
+              <IncludeNABox
+                attribute="openingusa"
+                filters={filters}
+                setFilters={setFilters}
+              />
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="filter-box">
+          <div className="filter-component">
+            <InputBoxFilter
+              label="Gross USA"
+              value1="minGrossUSA"
+              value2="maxGrossUSA"
+              filters={filters}
+              setFilters={setFilters}
+            />
+            <br />
+            <div className="filter-component">
+              <IncludeNABox
+                attribute="grossusa"
+                filters={filters}
+                setFilters={setFilters}
+              />
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="filter-box">
+          <div className="filter-component">
+            <InputBoxFilter
+              label="Gross World"
+              value1="minGrossWorld"
+              value2="maxGrossWorld"
+              filters={filters}
+              setFilters={setFilters}
+            />
+            <br />
+            <div className="filter-component">
+              <IncludeNABox
+                attribute="grossworld"
+                filters={filters}
+                setFilters={setFilters}
+              />
+            </div>
           </div>
         </div>
         <br />
