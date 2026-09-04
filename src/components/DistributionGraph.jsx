@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 
 function DistributionGraph({ data, attribute, min, max }) {
   const svgRef = useRef(null);
@@ -10,24 +10,35 @@ function DistributionGraph({ data, attribute, min, max }) {
   const marginBottom = 30;
   const marginLeft = 40;
 
-  useEffect(() => {
-    if (!data || !attribute || !svgRef.current) return;
-    const svg = d3.select(svgRef.current);
-    svg.selectAll("*").remove();
+  const { bins, maxVal, upperLimit } = useMemo(() => {
+    if (!data || !attribute) return { bins: [], maxVal: 0, upperLimit: 0 };
+
     const nodes = data.nodes ? data.nodes : data;
     const validData = nodes.filter(
       (d) =>
         d[attribute] !== undefined &&
         d[attribute] !== null &&
         d[attribute] !== 0 &&
-        d[attribute] >= 0,
+        d[attribute] > 0,
     );
-    if (validData.length === 0) return;
+    if (validData.length === 0) return { bins: [], maxVal: 0, upperLimit: 0 };
+
+    const maxVal = d3.max(validData, (d) => d[attribute]);
+    const thresholds = maxVal >= 10000 ? 100 : 40;
 
     const bins = d3
       .bin()
-      .thresholds(40)
-      .value((d) => d[attribute])(validData);
+      .thresholds(thresholds)
+      .value((d) => Math.min(d[attribute], 10000000))(validData);
+
+    const upperLimit = maxVal >= 1000000 ? 10000000 : bins[bins.length - 1].x1;
+    return { bins, maxVal, upperLimit };
+  }, [data, attribute]);
+
+  useEffect(() => {
+    const svg = d3.select(svgRef.current);
+    svg.selectAll("*").remove();
+    if (!svgRef.current || bins.length === 0) return;
 
     svg
       .attr("viewBox", [0, 0, width, height])
@@ -35,7 +46,7 @@ function DistributionGraph({ data, attribute, min, max }) {
 
     const x = d3
       .scaleLinear()
-      .domain([bins[0].x0, bins[bins.length - 1].x1])
+      .domain([bins[0].x0, upperLimit])
       .range([marginLeft, width - marginRight]);
 
     const y = d3
@@ -68,7 +79,16 @@ function DistributionGraph({ data, attribute, min, max }) {
         d3
           .axisBottom(x)
           .ticks(width / 80)
-          .tickSizeOuter(0),
+          .tickSizeOuter(0)
+          .tickFormat((d) => {
+            if (d >= 10000000) {
+              return "10m+";
+            }
+            if (d >= 1000000) {
+              return `${d / 1000000}m`;
+            }
+            return d;
+          }),
       )
       .call((g) => g.selectAll("text").style("font-size", "16px"));
 

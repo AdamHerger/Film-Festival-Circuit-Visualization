@@ -14,26 +14,27 @@ function RangeSliderFilter({
   setFilters,
   graph,
 }) {
+  const min = filters?.[value1] ?? minval;
+  const max = filters?.[value2] ?? maxval;
   return (
     <>
       <div>{label}</div>
       <label className="slider-label">
-        {filters[value1]} - {filters[value2]}
+        {min} - {max}
       </label>
       <DistributionGraph
         data={graph}
         attribute={attribute}
-        min={filters[value1]}
-        max={filters[value2]}
+        min={min}
+        max={max}
       />
       <div className="range-slider">
         <Slider
-          className="slider"
           range
           min={minval}
           max={maxval}
           step={step}
-          value={[filters[value1], filters[value2]]}
+          value={[min, max]}
           onChange={(e) =>
             setFilters({
               ...filters,

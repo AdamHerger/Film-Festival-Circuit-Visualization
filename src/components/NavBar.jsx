@@ -1,16 +1,14 @@
 import { Link } from "react-router-dom";
 
-function NavBar() {
+function NavBar({ setCurrentPage, currentPage }) {
   return (
     <nav className="navbar">
-      <div className="navbar-links">
-        <Link to="/" className="nav-link">
-          Home
-        </Link>
-        <Link to="/about" className="nav-link">
-          About
-        </Link>
-      </div>
+      <button className="nav-link" onClick={() => setCurrentPage("home")}>
+        Home
+      </button>
+      <button className="nav-link" onClick={() => setCurrentPage("about")}>
+        About
+      </button>
     </nav>
   );
 }

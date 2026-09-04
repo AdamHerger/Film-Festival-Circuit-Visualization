@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import AttributeFilters from "../components/AttributeFilters";
 import FilterFilms from "../components/FilterFilms";
 import SingleRangeSlider from "../components/SingleRangeSlider";
+import ColorDropdown from "../components/ColorDropdown";
 function Home() {
   const [films, setFilms] = useState([]);
   const [runs, setRuns] = useState([]);
@@ -13,8 +14,12 @@ function Home() {
   const [festivals, setFestivals] = useState([]);
   const [graph, setGraph] = useState(null);
   const [graphData, setGraphData] = useState(null);
+  const [colorAttribute, setColorAttribute] = useState("default");
 
   const [filters, setFilters] = useState({
+    // film filters
+    ANDOR: new Map(),
+
     documentaryOnly: false,
     fictOnly: false,
     expOnly: false,
@@ -53,10 +58,30 @@ function Home() {
     awards: [],
     languages: [],
     genres: [],
+
+    //festival filters
+    festivalCountry: [],
+    festivalCity: [],
+    festivalCategory: [],
+
+    FMENA: false,
+    Fafrica: false,
+    Fasia: false,
+    Fna: false,
+    Feu: false,
+    Fla: false,
+    Focean: false,
+
+    minFestivalConnections: 1,
+    maxFestivalConnections: 2500,
+    minFestivalYear: 1900,
+    maxFestivalYear: 2026,
   });
 
   const [repel, setRepel] = useState(15);
   const [attract, setAttract] = useState(5);
+  const [minNodeSize, setminNodeSize] = useState(6);
+  const [maxNodeSize, setmaxNodeSize] = useState(15);
 
   useEffect(() => {
     Promise.all([
@@ -80,6 +105,7 @@ function Home() {
   const runSimulation = () => {
     if (!graph) return;
     const filteredGraph = FilterFilms(graph, filters);
+
     const clonedGraph = {
       nodes: filteredGraph.nodes.map((node) => ({ ...node })),
       links: filteredGraph.links.map((link) => ({ ...link })),
@@ -91,7 +117,14 @@ function Home() {
   return (
     <div className="home">
       <div className="home-layout">
-        <NodeGraph data={graphData} repel={repel} attract={attract} />
+        <NodeGraph
+          data={graphData}
+          repel={repel}
+          attract={attract}
+          colorAttribute={colorAttribute}
+          minNodeSize={minNodeSize}
+          maxNodeSize={maxNodeSize}
+        />
         <div className="filter-section">
           <button className="simulation-button" onClick={runSimulation}>
             Run Simulation
@@ -115,11 +148,35 @@ function Home() {
                 setValue={setRepel}
               />
             </div>
+            <div className="force-box">
+              <SingleRangeSlider
+                label="Min Node Size"
+                minval={1}
+                maxval={maxNodeSize - 1}
+                value={minNodeSize}
+                setValue={setminNodeSize}
+              />
+            </div>
+            <div className="force-box">
+              <SingleRangeSlider
+                label="Max Node Size"
+                minval={minNodeSize + 1}
+                maxval={50}
+                value={maxNodeSize}
+                setValue={setmaxNodeSize}
+              />
+            </div>
           </div>
+          <ColorDropdown
+            colorAttribute={colorAttribute}
+            setColorAttribute={setColorAttribute}
+          />
+          <br />
           <AttributeFilters
             filters={filters}
             setFilters={setFilters}
             films={films}
+            festivals={festivals}
             awards={awards}
             runs={runs}
             general={general}

@@ -3,6 +3,7 @@ import RangeSliderFilter from "./RangeSliderFilter";
 import InputBoxFilter from "./InputBoxFilter";
 import DropdownFilter from "./DropdownFilter";
 import IncludeNABox from "./IncludeNABox";
+import ANDORBox from "./ANDORBox";
 import { getUniqueOptions } from "./FilterOptions";
 
 import { useMemo } from "react";
@@ -11,6 +12,7 @@ function AttributeFilters({
   filters,
   setFilters,
   films,
+  festivals,
   awards,
   general,
   runs,
@@ -86,9 +88,85 @@ function AttributeFilters({
     [general],
   );
 
+  // festival options
+  const festivalCountryOptions = useMemo(
+    () =>
+      getUniqueOptions(
+        festivals,
+        Array.from(
+          { length: 4 },
+          (_, i) => `fest.location.country.en.${i + 1}.standrardized`,
+        ),
+      ),
+    [festivals],
+  );
+
+  const festivalCityOptions = useMemo(
+    () =>
+      getUniqueOptions(
+        festivals,
+        Array.from({ length: 4 }, (_, i) => `fest.location.city.en.${i + 1}`),
+      ),
+    [festivals],
+  );
+
+  const festivalCategoryOptions = [
+    "LGBTQ+",
+    "Women",
+    "Black",
+    "Jewish",
+    "Asian",
+    "Latino",
+    "Other Identity",
+    "Film Noir",
+    "Genre",
+    "Classics",
+    "Underground",
+    "Arthouse",
+    "Independent",
+    "Trash",
+    "Science",
+    "Historical",
+    "War",
+    "Crime",
+    "Comedy",
+    "Action",
+    "Food & Wine",
+    "Animation",
+    "Archival",
+    "Documentary",
+    "Experimental",
+    "Silent",
+    "Children & Youth",
+    "Up and Coming",
+    "Debut",
+    "Short Film",
+    "Screenplay",
+    "Video",
+    "Disability",
+    "Human Rights",
+    "Indigenous",
+    "Education",
+    "Mental Health",
+    "Student",
+    "Diaspora",
+    "Transnational",
+    "National",
+    "Region",
+    "Online",
+    "TV",
+    "Series",
+    "Random Fun Themes",
+    "Porn / Erotic",
+    "Ethnographic & Anthropological",
+    "Environmental & Nature",
+    "Fantasy / Horror / Thriller / Sci-Fi",
+  ];
+
+  const releaseTypes = ["Theatrical", "Digital", "Television", "DVD"];
+
   return (
     <div>
-      <br />
       <div className="film-filters">
         <p className="filter-label">Film Filters</p>
         <div className="filter-box">
@@ -128,6 +206,51 @@ function AttributeFilters({
             <CheckBoxFilter
               label="LGBTQ"
               attribute="lgbtqOnly"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-label">
+            <ANDORBox
+              attribute="genre"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+        </div>
+        <br />
+        <div className="filter-box">
+          <div className="filter-component">
+            <DropdownFilter
+              label="Genres"
+              value="genres"
+              options={genreOptions}
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-label">
+            <ANDORBox
+              attribute="genres"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+        </div>
+        <br />
+        <div className="filter-box">
+          <div className="filter-component">
+            <DropdownFilter
+              label="Release Type"
+              value="releaseTypes"
+              options={releaseTypes}
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-label">
+            <ANDORBox
+              attribute="releaseTypes"
               filters={filters}
               setFilters={setFilters}
             />
@@ -198,6 +321,151 @@ function AttributeFilters({
               filters={filters}
               setFilters={setFilters}
               graph={graph}
+            />
+          </div>
+        </div>
+        <br />
+        <div className="filter-box">
+          <div className="filter-component">
+            <DropdownFilter
+              label="Production Country"
+              value="country"
+              options={countryOptions}
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-label">
+            <ANDORBox
+              attribute="country"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+        </div>
+
+        <br />
+
+        <div className="filter-box">
+          <div className="filter-component">
+            <CheckBoxFilter
+              label="North America"
+              attribute="na"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-component">
+            <CheckBoxFilter
+              label="Europe"
+              attribute="eu"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-component">
+            <CheckBoxFilter
+              label="Asia"
+              attribute="asia"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-component">
+            <CheckBoxFilter
+              label="Africa"
+              attribute="africa"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-component">
+            <CheckBoxFilter
+              label="Latin America"
+              attribute="la"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-component">
+            <CheckBoxFilter
+              label="Oceania"
+              attribute="ocean"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-component">
+            <CheckBoxFilter
+              label="MENA"
+              attribute="MENA"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-label">
+            <ANDORBox
+              attribute="region"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+        </div>
+        <br />
+        <div className="filter-box">
+          <div className="filter-component">
+            <DropdownFilter
+              label="Languages"
+              value="languages"
+              options={languageOptions}
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-label">
+            <ANDORBox
+              attribute="languages"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+        </div>
+        <br />
+
+        <div className="filter-box">
+          <div className="filter-component">
+            <DropdownFilter
+              label="Directors"
+              value="director"
+              options={directorOptions}
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-label">
+            <ANDORBox
+              attribute="director"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+        </div>
+        <br />
+        <div className="filter-box">
+          <div className="filter-component">
+            <DropdownFilter
+              label="Awards"
+              value="awards"
+              options={awardOptions}
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-label">
+            <ANDORBox
+              attribute="awards"
+              filters={filters}
+              setFilters={setFilters}
             />
           </div>
         </div>
@@ -289,26 +557,35 @@ function AttributeFilters({
             </div>
           </div>
         </div>
-        <br />
+      </div>
+      <br />
+      <div className="festival-filters">
+        <p className="filter-label">Festival Filters</p>
         <div className="filter-box">
           <div className="filter-component">
             <DropdownFilter
-              label="Production Country"
-              value="country"
-              options={countryOptions}
+              label="Category"
+              value="festivalCategory"
+              options={festivalCategoryOptions}
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+          <div className="filter-label">
+            <ANDORBox
+              attribute="festivalCategory"
               filters={filters}
               setFilters={setFilters}
             />
           </div>
         </div>
-
         <br />
         <div className="filter-box">
           <div className="filter-component">
             <DropdownFilter
-              label="Languages"
-              value="languages"
-              options={languageOptions}
+              label="Country"
+              value="festivalCountry"
+              options={festivalCountryOptions}
               filters={filters}
               setFilters={setFilters}
             />
@@ -318,22 +595,20 @@ function AttributeFilters({
         <div className="filter-box">
           <div className="filter-component">
             <DropdownFilter
-              label="Genres"
-              value="genres"
-              options={genreOptions}
+              label="City"
+              value="festivalCity"
+              options={festivalCityOptions}
               filters={filters}
               setFilters={setFilters}
             />
           </div>
         </div>
-
         <br />
-
         <div className="filter-box">
           <div className="filter-component">
             <CheckBoxFilter
               label="North America"
-              attribute="na"
+              attribute="Fna"
               filters={filters}
               setFilters={setFilters}
             />
@@ -341,7 +616,7 @@ function AttributeFilters({
           <div className="filter-component">
             <CheckBoxFilter
               label="Europe"
-              attribute="eu"
+              attribute="Feu"
               filters={filters}
               setFilters={setFilters}
             />
@@ -349,7 +624,7 @@ function AttributeFilters({
           <div className="filter-component">
             <CheckBoxFilter
               label="Asia"
-              attribute="asia"
+              attribute="Fasia"
               filters={filters}
               setFilters={setFilters}
             />
@@ -357,7 +632,7 @@ function AttributeFilters({
           <div className="filter-component">
             <CheckBoxFilter
               label="Africa"
-              attribute="africa"
+              attribute="Fafrica"
               filters={filters}
               setFilters={setFilters}
             />
@@ -365,7 +640,7 @@ function AttributeFilters({
           <div className="filter-component">
             <CheckBoxFilter
               label="Latin America"
-              attribute="la"
+              attribute="Fla"
               filters={filters}
               setFilters={setFilters}
             />
@@ -373,7 +648,7 @@ function AttributeFilters({
           <div className="filter-component">
             <CheckBoxFilter
               label="Oceania"
-              attribute="ocean"
+              attribute="Focean"
               filters={filters}
               setFilters={setFilters}
             />
@@ -381,21 +656,7 @@ function AttributeFilters({
           <div className="filter-component">
             <CheckBoxFilter
               label="MENA"
-              attribute="MENA"
-              filters={filters}
-              setFilters={setFilters}
-            />
-          </div>
-        </div>
-
-        <br />
-
-        <div className="filter-box">
-          <div className="filter-component">
-            <DropdownFilter
-              label="Directors"
-              value="director"
-              options={directorOptions}
+              attribute="FMENA"
               filters={filters}
               setFilters={setFilters}
             />
@@ -404,20 +665,39 @@ function AttributeFilters({
         <br />
         <div className="filter-box">
           <div className="filter-component">
-            <DropdownFilter
-              label="Awards"
-              value="awards"
-              options={awardOptions}
+            <RangeSliderFilter
+              label="Connections"
+              attribute="festivalConnections"
+              minval={1}
+              maxval={2500}
+              step={1}
+              value1="minFestivalConnections"
+              value2="maxFestivalConnections"
               filters={filters}
               setFilters={setFilters}
+              graph={graph}
+            />
+          </div>
+        </div>
+        <br />
+        <div className="filter-box">
+          <div className="filter-component">
+            <RangeSliderFilter
+              label="Founding Year"
+              attribute="festivalYear"
+              minval={1900}
+              maxval={2026}
+              step={1}
+              value1="minFestivalYear"
+              value2="maxFestivalYear"
+              filters={filters}
+              setFilters={setFilters}
+              graph={graph}
             />
           </div>
         </div>
       </div>
       <br />
-      <div className="festival-filters">
-        <p className="filter-label">ar</p>
-      </div>
     </div>
   );
 }

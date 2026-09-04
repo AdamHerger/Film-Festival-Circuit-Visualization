@@ -31,10 +31,23 @@
   scrollbar-width: none;
 }
 
+.navbar {
+  display: flexbox;
+  text-align: right;
+}
+
 .nav-link {
   padding: 10px;
   text-decoration: none;
   color: lightblue;
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-family: var(--sans);
+  cursor: pointer;
+}
+.nav-link:hover {
+  color: rgb(218, 237, 243);
 }
 
 .navbar-links {
@@ -82,7 +95,8 @@
   width: 100%;
   padding: 20px 30px;
   border: 2px solid lightblue;
-  background-color: rgb(5, 117, 155);
+  border-radius: 5px;
+  background-color: #326ea0;
   font: 18px/145% var(--sans);
 }
 .simulation-button:hover {
@@ -135,6 +149,7 @@
 
 .filter-box {
   border: 1px solid white;
+  border-radius: 5px;
   padding: 10px;
 }
 
@@ -154,14 +169,18 @@
 
 .force-box {
   border: 1px solid white;
+  border-radius: 5px;
   text-align: center;
-  width: 160px;
+  width: 30;
+  padding: 5px;
 }
 
 .force-box-set {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   padding-top: 25px;
-  gap: 18px;
+  gap: 10px;
+  justify-content: center;
 }
 
 /*dropdown menu css stuff*/
@@ -194,16 +213,20 @@
 
 .film-filters {
   border: 1px solid #56a4e4;
+  border-radius: 5px;
   padding: 10px;
 }
 
 .festival-filters {
   border: 1px solid #dd6363;
+  border-radius: 5px;
+
   padding: 10px;
 }
 
 .filter-label {
   text-align: center;
+  margin-top: 10px;
 }
 
 .about-page {
@@ -217,4 +240,30 @@
   display: block;
   padding: 10px;
   border: 1px solid white;
+}
+
+.andor-label {
+  display: flexbox;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid white;
+  background-color: #1f4869;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.color-title {
+  text-align: center;
+}
+
+.pdf-viewer {
+  width: 90%;
+  justify-self: center;
+  height: 93vb;
+}
+
+.composite-score {
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 10px;
 }

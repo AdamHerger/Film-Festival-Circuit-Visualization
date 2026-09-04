@@ -2,12 +2,19 @@ import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import NodeTooltip from "./NodeTooltip";
 
-function NodeGraph({ data, repel, attract }) {
+function NodeGraph({
+  data,
+  repel,
+  attract,
+  colorAttribute,
+  minNodeSize,
+  maxNodeSize,
+}) {
   const svgRef = useRef(null);
   const [hoveredNode, setHoveredNode] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null);
-  const minRadius = 4;
-  const maxRadius = 15;
+  const minRadius = minNodeSize;
+  const maxRadius = maxNodeSize;
   const repelForce = repel;
   const attractForce = attract;
 
@@ -19,11 +26,6 @@ function NodeGraph({ data, repel, attract }) {
     const { width, height } = svgRef.current.getBoundingClientRect();
 
     d3.select(svgRef.current).selectAll("*").remove();
-
-    const color = d3
-      .scaleOrdinal()
-      .domain(["film", "festival"])
-      .range(["#56a4e4", "#dd6363"]);
 
     const links = data.links.map((d) => ({ ...d }));
     const nodes = data.nodes.map((d) => ({ ...d }));
@@ -46,6 +48,38 @@ function NodeGraph({ data, repel, attract }) {
       .domain(d3.extent(nodes, (d) => d.connections))
       .range([minRadius, maxRadius]);
 
+    const getValidValues = (d) => {
+      const val = d[colorAttribute];
+      if (val == null) return [];
+      const vals = Array.isArray(val) ? val : [val];
+      return vals.filter((v) => v != null && v !== "NA" && v !== "");
+    };
+
+    const uniqueVals = Array.from(
+      new Set(
+        nodes
+          .filter((d) => d.group === "film")
+          .flatMap((d) => getValidValues(d)),
+      ),
+    ).sort();
+
+    const colorScale = d3
+      .scaleOrdinal(d3.interpolateRainbow)
+      .domain(uniqueVals)
+      .range(
+        uniqueVals.map((_, i) =>
+          d3.interpolateRainbow(
+            uniqueVals.length === 1 ? 0.5 : i / uniqueVals.length,
+          ),
+        ),
+      );
+
+    const arc = d3.arc().innerRadius(0);
+    const pie = d3
+      .pie()
+      .value(() => 1)
+      .sort(null);
+
     const svg = d3
       .select(svgRef.current)
       .attr("viewBox", `0 0 ${width} ${height}`);
@@ -64,15 +98,27 @@ function NodeGraph({ data, repel, attract }) {
 
     svg.on("click", () => {
       setSelectedNode(null);
-      node
-        .transition()
-        .duration(200)
-        .attr("r", (d) => radiusScale(d.connections));
+      currentSelectedNode = null;
+      node.each(function (d) {
+        const r = radiusScale(d.connections);
+        arc.outerRadius(r);
+        d3.select(this)
+          .selectAll("circle")
+          .transition()
+          .duration(200)
+          .attr("r", r);
+        d3.select(this)
+          .selectAll("path")
+          .transition()
+          .duration(200)
+          .attr("d", arc);
+      });
       link.transition().duration(200).attr("stroke", "#999");
     });
 
     const simulation = d3
       .forceSimulation(nodes)
+      .alphaDecay(0.05)
       .force(
         "charge",
         d3
@@ -106,28 +152,81 @@ function NodeGraph({ data, repel, attract }) {
       });
     const node = graph
       .append("g")
-      .attr("stroke", "#ffffff28")
+      .attr("stroke", "#ffffff05")
       .attr("stroke-width", 1.5)
-      .selectAll("circle")
+      .selectAll("g.node-group")
       .data(nodes)
-      .join("circle")
-      .attr("r", (d) => radiusScale(d.connections))
-      .attr("fill", (d) => color(d.group))
+      .join("g")
+      .attr("class", "node-group")
+      .style("cursor", "pointer")
+      .each(function (d) {
+        const group = d3.select(this);
+        const r = radiusScale(d.connections);
+
+        if (colorAttribute === "default") {
+          group
+            .append("circle")
+            .attr("r", r)
+            .attr("fill", d.group === "festival" ? "#dd6363" : "#56a4e4");
+          return;
+        }
+
+        if (d.group === "festival") {
+          group.append("circle").attr("r", r).attr("fill", "white");
+          return;
+        }
+
+        let vals = getValidValues(d);
+
+        if (vals.length === 0) {
+          group.append("circle").attr("r", r).attr("fill", "#444444");
+        } else if (vals.length === 1) {
+          const idx = uniqueVals.indexOf(vals[0]);
+          group
+            .append("circle")
+            .attr("r", r)
+            .attr("fill", idx !== -1 ? colorScale(idx) : "#444444");
+        } else {
+          arc.outerRadius(r);
+          group
+            .selectAll("path")
+            .data(pie(vals))
+            .join("path")
+            .attr("d", arc)
+            .attr("fill", (p) => colorScale(p.data) || "#444444");
+        }
+      })
       .on("mouseover", function (event, d) {
         setHoveredNode(d);
+        const r = radiusScale(d.connections) * 1.2;
+        arc.outerRadius(r);
         d3.select(this)
+          .selectAll("circle")
           .transition()
           .duration(200)
-          .attr("r", (d) => radiusScale(d.connections) * 1.2);
+          .attr("r", r);
+        d3.select(this)
+          .selectAll("path")
+          .transition()
+          .duration(200)
+          .attr("d", arc);
       })
       .on("mouseout", function (event, d) {
         setHoveredNode(null);
 
         if (currentSelectedNode !== d) {
+          const r = radiusScale(d.connections);
+          arc.outerRadius(r);
           d3.select(this)
+            .selectAll("circle")
             .transition()
             .duration(200)
-            .attr("r", (d) => radiusScale(d.connections));
+            .attr("r", r);
+          d3.select(this)
+            .selectAll("path")
+            .transition()
+            .duration(200)
+            .attr("d", arc);
         }
       })
       .on("click", function (event, d) {
@@ -136,14 +235,24 @@ function NodeGraph({ data, repel, attract }) {
         currentSelectedNode = d;
         setSelectedNode(d);
 
-        d3.selectAll("circle")
-          .transition()
-          .duration(200)
-          .attr("r", (node) =>
-            node.id === d.id
-              ? radiusScale(node.connections) * 1.2
-              : radiusScale(node.connections),
-          );
+        node.each(function (nodeData) {
+          const r =
+            nodeData.id === d.id
+              ? radiusScale(nodeData.connections) * 1.2
+              : radiusScale(nodeData.connections);
+          arc.outerRadius(r);
+          d3.select(this)
+            .selectAll("circle")
+            .transition()
+            .duration(200)
+            .attr("r", r);
+          d3.select(this)
+            .selectAll("path")
+            .transition()
+            .duration(200)
+            .attr("d", arc);
+        });
+
         link
           .transition()
           .duration(200)
@@ -161,13 +270,13 @@ function NodeGraph({ data, repel, attract }) {
         .attr("x2", (d) => d.target.x)
         .attr("y2", (d) => d.target.y);
 
-      node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+      node.attr("transform", (d) => `translate(${d.x},${d.y})`);
     });
 
     setTimeout(() => simulation.stop(), 10000);
 
     return () => simulation.stop();
-  }, [data]);
+  }, [data, colorAttribute]);
 
   return (
     <div className="graph-container">

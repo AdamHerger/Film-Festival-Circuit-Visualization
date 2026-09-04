@@ -12,7 +12,6 @@ function InputBoxFilter({
   return (
     <>
       <div>{label}</div>
-
       <input
         className="input-field"
         type="number"
@@ -36,7 +35,8 @@ function InputBoxFilter({
             [value2]: e.target.value,
           })
         }
-      />
+      />{" "}
+      <br /> <br />
       <DistributionGraph
         data={graph}
         attribute={attribute}
