@@ -90,6 +90,14 @@ function FilterFilms(graph, filters) {
       return false;
 
     for (const [attribute, min, max] of rangeFilters) {
+      const value = film[attribute];
+      const includeNA = filters.includeNA.get(attribute) ?? true;
+
+      if (value < 0 || isNaN(value) || value === null) {
+        if (!includeNA) return false;
+        continue;
+      }
+
       if (film[attribute] < filters[min] || film[attribute] > filters[max])
         return false;
     }

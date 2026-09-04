@@ -109,7 +109,7 @@ function BuildGraph(films, runs, festivals, awards, general) {
         ? generalInfo.languages.split(" | ")
         : ["NA"],
       genres: generalInfo.genres ? generalInfo.genres.split(" | ") : ["NA"],
-      rating: +generalInfo.rating || 0,
+      rating: +generalInfo.rating || -1,
 
       budget: CurrencyConverter(generalInfo.budget),
       openingusa: CurrencyConverter(generalInfo.openingusa),

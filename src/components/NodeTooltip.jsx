@@ -8,8 +8,13 @@ function NodeTooltip({ node }) {
 
   const renderLine = (label, val, formatter) => {
     let displayVal = "NA";
-
-    if (val !== undefined && val !== null && val !== "" && val !== -1) {
+    if (
+      val !== undefined &&
+      val !== null &&
+      val !== "" &&
+      val !== -1 &&
+      val !== "NaN"
+    ) {
       if (Array.isArray(val)) {
         displayVal =
           val.length > 0 ? (formatter ? formatter(val) : val.join(", ")) : "NA";

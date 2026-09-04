@@ -272,6 +272,14 @@ function AttributeFilters({
               graph={graph}
             />
           </div>
+          <br />
+          <div className="filter-component">
+            <IncludeNABox
+              attribute="year"
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
         </div>
         <br />
         <div className="filter-box">
@@ -287,6 +295,14 @@ function AttributeFilters({
               filters={filters}
               setFilters={setFilters}
               graph={graph}
+            />
+          </div>
+          <br />
+          <div className="filter-component">
+            <IncludeNABox
+              attribute="runtime"
+              filters={filters}
+              setFilters={setFilters}
             />
           </div>
         </div>
@@ -321,6 +337,14 @@ function AttributeFilters({
               filters={filters}
               setFilters={setFilters}
               graph={graph}
+            />
+          </div>
+          <br />
+          <div className="filter-component">
+            <IncludeNABox
+              attribute="rating"
+              filters={filters}
+              setFilters={setFilters}
             />
           </div>
         </div>
