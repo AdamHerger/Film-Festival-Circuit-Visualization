@@ -156,14 +156,11 @@ function Home() {
 
   useEffect(() => {
     Promise.all([
-      d3.csv(`${base}dataset/1_film-dataset_festival-program_wide.csv`),
-      d3.csv(`${base}dataset/3_imdb-dataset_festival-runs_long.csv`),
-      d3.dsv(
-        ";",
-        `${base}dataset/4_festival-library_dataset_imdb-and-survey.csv`,
-      ),
-      d3.csv(`${base}dataset/3_imdb-dataset_awards_long.csv`),
-      d3.csv(`${base}dataset/3_imdb-dataset_general-info_wide.csv`),
+      d3.csv("/dataset/1_film-dataset_festival-program_wide.csv"),
+      d3.csv("/dataset/3_imdb-dataset_festival-runs_long.csv"),
+      d3.dsv(";", "/dataset/4_festival-library_dataset_imdb-and-survey.csv"),
+      d3.csv("/dataset/3_imdb-dataset_awards_long.csv"),
+      d3.csv("/dataset/3_imdb-dataset_general-info_wide.csv"),
     ]).then(([films, runs, festivals, awards, general]) => {
       setFilms(films);
       setRuns(runs);
