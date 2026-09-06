@@ -1,5 +1,5 @@
 import DropdownFilter from "./DropdownFilter";
-
+import CalculateCompositeScore from "./CalculateCompositeScore";
 function FilterFilms(graph, filters) {
   const filmNodes = graph.nodes.filter((node) => node.type === "film");
   const festivalNodes = graph.nodes.filter((node) => node.type === "festival");
@@ -129,6 +129,16 @@ function FilterFilms(graph, filters) {
       ) {
         return false;
       }
+    }
+
+    // composite score calc stuff
+    const compositeScore = CalculateCompositeScore(film, filters);
+    if (
+      filters.isCompositeScoreActive &&
+      (compositeScore < (filters.minCompositeScore ?? 0) ||
+        compositeScore > (filters.maxCompositeScore ?? 100))
+    ) {
+      return false;
     }
 
     return true;

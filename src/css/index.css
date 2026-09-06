@@ -98,6 +98,7 @@
   border-radius: 5px;
   background-color: #326ea0;
   font: 18px/145% var(--sans);
+  cursor: pointer;
 }
 .simulation-button:hover {
   background-color: rgb(18, 145, 187);
@@ -142,7 +143,7 @@
 
 .filter-component {
   text-align: center;
-  padding: 0px 30px;
+  padding: 0px 10px;
   display: flexbox;
   justify-items: center;
 }
@@ -250,6 +251,7 @@
   background-color: #1f4869;
   padding: 10px 20px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .color-title {
@@ -262,8 +264,19 @@
   height: 93vb;
 }
 
-.composite-score {
+.compositescore-filters {
+  display: flexbox;
   border: 1px solid white;
-  border-radius: 5px;
   padding: 10px;
+  border-radius: 5px;
+}
+
+.compositescore-input {
+  margin: 10px;
+  width: 40px;
+}
+
+.compositescore-target-input {
+  margin: 10px;
+  width: 60px;
 }

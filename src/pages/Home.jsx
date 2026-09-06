@@ -1,11 +1,12 @@
 import * as d3 from "d3";
 import NodeGraph from "../components/NodeGraph";
-import BuildGraph from "../components/BuildGraph";
+import BuildGraph from "../components/buildGraph";
 import { useEffect, useState } from "react";
 import AttributeFilters from "../components/AttributeFilters";
 import FilterFilms from "../components/FilterFilms";
 import SingleRangeSlider from "../components/SingleRangeSlider";
 import ColorDropdown from "../components/ColorDropdown";
+import CompositeScore from "../components/CompositeScore";
 function Home() {
   const [films, setFilms] = useState([]);
   const [runs, setRuns] = useState([]);
@@ -76,6 +77,76 @@ function Home() {
     maxFestivalConnections: 2500,
     minFestivalYear: 1900,
     maxFestivalYear: 2026,
+
+    compositeScore: new Map([
+      [
+        "year",
+        {
+          weight: 100,
+          preference: "target",
+          target: 2000,
+        },
+      ],
+      [
+        "runtime",
+        {
+          weight: 100,
+          preference: "target",
+          target: 60,
+        },
+      ],
+      [
+        "connections",
+        {
+          weight: 0,
+          preference: "max",
+          target: null,
+        },
+      ],
+      [
+        "rating",
+        {
+          weight: 0,
+          preference: "max",
+          target: null,
+        },
+      ],
+      [
+        "budget",
+        {
+          weight: 0,
+          preference: "min",
+          target: null,
+        },
+      ],
+      [
+        "openingusa",
+        {
+          weight: 0,
+          preference: "max",
+          target: null,
+        },
+      ],
+      [
+        "grossusa",
+        {
+          weight: 0,
+          preference: "max",
+          target: null,
+        },
+      ],
+      [
+        "grossworld",
+        {
+          weight: 0,
+          preference: "max",
+          target: null,
+        },
+      ],
+    ]),
+    minCompositeScore: 0,
+    maxCompositeScore: 100,
+    isCompositeScoreActive: false,
   });
 
   const [repel, setRepel] = useState(15);
@@ -124,6 +195,7 @@ function Home() {
           colorAttribute={colorAttribute}
           minNodeSize={minNodeSize}
           maxNodeSize={maxNodeSize}
+          filters={filters}
         />
         <div className="filter-section">
           <button className="simulation-button" onClick={runSimulation}>
@@ -170,6 +242,11 @@ function Home() {
           <ColorDropdown
             colorAttribute={colorAttribute}
             setColorAttribute={setColorAttribute}
+          />
+          <CompositeScore
+            filters={filters}
+            setFilters={setFilters}
+            data={graph}
           />
           <br />
           <AttributeFilters

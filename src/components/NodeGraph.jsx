@@ -9,6 +9,7 @@ function NodeGraph({
   colorAttribute,
   minNodeSize,
   maxNodeSize,
+  filters,
 }) {
   const svgRef = useRef(null);
   const [hoveredNode, setHoveredNode] = useState(null);
@@ -280,7 +281,7 @@ function NodeGraph({
 
   return (
     <div className="graph-container">
-      <NodeTooltip node={selectedNode} />
+      <NodeTooltip node={selectedNode} filters={filters} />
       <svg ref={svgRef} className="nodegraph"></svg>
     </div>
   );

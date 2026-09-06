@@ -1,4 +1,5 @@
-function NodeTooltip({ node }) {
+import CalculateCompositeScore from "./CalculateCompositeScore";
+function NodeTooltip({ node, filters }) {
   if (!node) return null;
 
   const currencyFormat = (val) =>
@@ -28,7 +29,6 @@ function NodeTooltip({ node }) {
       </p>
     );
   };
-
   return (
     <div className="tooltip">
       {renderLine("Type", node.type)}
@@ -46,6 +46,11 @@ function NodeTooltip({ node }) {
       ) : (
         <>
           {renderLine("Title", node.title)}
+          {filters.isCompositeScoreActive &&
+            renderLine(
+              "Composite Score",
+              Math.round(CalculateCompositeScore(node, filters)),
+            )}
           {renderLine("Category", node.genre || node.festivalCategory)}
           {renderLine("Genres", node.genres)}
           {renderLine("Country", node.festivalCountry || node.country)}
