@@ -295,3 +295,48 @@
   margin: 10px;
   width: 60px;
 }
+
+.composite-score-slider {
+  text-align: center;
+}
+
+.info-hover-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: solid 1px rgb(121, 124, 129);
+  border-radius: 50%;
+  padding: 2px;
+  cursor: pointer;
+  position: relative;
+  margin-left: 10px;
+  background-color: rgb(121, 124, 129);
+}
+
+.info-hover {
+  visibility: hidden;
+  position: absolute;
+  top: 100%;
+  font-size: 12px;
+  transform: translate(30%, -120%);
+  margin-left: 8px;
+  background-color: rgba(121, 124, 129, 0.815);
+  color: white;
+  border-radius: 5px;
+  padding: 8px 12px;
+  width: max-content;
+  max-width: 220px;
+  white-space: normal;
+  cursor: default;
+  text-align: left;
+  z-index: 100;
+}
+
+.info-hover-icon:hover {
+  .info-hover {
+    visibility: visible;
+  }
+  background-color: rgb(153, 156, 161);
+}

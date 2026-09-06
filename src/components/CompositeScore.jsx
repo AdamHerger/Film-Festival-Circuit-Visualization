@@ -1,6 +1,7 @@
 import { useEffect, useRef, useMemo } from "react";
 import CompositeScoreDistributionGraph from "./CompositeScoreDistributionGraph";
 import CompositeScoreRangeSlider from "./CompositeScoreRangeSlider";
+import InfoHover from "./InfoHover";
 
 function CompositeScore({ filters, setFilters, data }) {
   const numericAttributes = [
@@ -47,7 +48,12 @@ function CompositeScore({ filters, setFilters, data }) {
         });
       }}
     >
-      <summary>Composite Score</summary>
+      <summary>
+        Composite Score
+        <InfoHover text="The composite score allows you to add weights to every numeric attribute resulting in one final combined score. Weights are valued 0-100 (must not necessarily add up to 100 total). Optimize for either a min, max, or target value and filter the resulting distribution below. NA values are counted as 0." />
+      </summary>
+      <br />
+
       <div className="compositescore-filters">
         <label>Attribute - Weight - Type - (Target)</label>
         {numericAttributes.map(([attribute, minFilter, maxFilter]) => {
