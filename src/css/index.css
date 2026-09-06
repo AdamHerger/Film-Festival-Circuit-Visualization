@@ -59,13 +59,15 @@
   justify-content: center;
   border: 1px solid white;
   flex: 1;
+  min-width: 0;
   height: 80vh;
-  min-height: 0;
   background-color: #1a1b1b;
 }
 
 .graph-container {
   display: flex;
+  flex: 1;
+  min-width: 0;
   gap: 10px;
   position: relative;
   width: 90%;
@@ -78,8 +80,7 @@
 
 .tooltip {
   border: 1px solid white;
-  border-radius: 5px;
-  flex: 0 0 20%;
+  flex: 0 0 300px;
   min-height: 0;
   text-align: left;
   padding: 0px 10px;
@@ -128,13 +129,32 @@
 .filter-section {
   padding-top: 10px;
   padding-right: 10px;
-  flex: 0 0 20%;
+  flex: 0 0 400px;
   height: 100%;
   min-height: 0;
+  flex-shrink: 0;
+  min-width: 100px;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: none;
-  min-width: 10%;
+}
+@media screen and (max-width: 1300px) {
+  .filter-section {
+    flex: 0 0 250px;
+    padding-right: 0px;
+  }
+  .tooltip {
+    flex: 0 0 25%;
+  }
+}
+@media screen and (max-width: 600px) {
+  .filter-section {
+    flex: 0 0 160px;
+    padding-right: 0px;
+  }
+  .tooltip {
+    flex: 0 0 20%;
+  }
 }
 
 .filter-component {
@@ -180,7 +200,6 @@
   justify-content: center;
 }
 
-/*dropdown menu css stuff*/
 .filter-select__option {
   color: black !important;
 }
