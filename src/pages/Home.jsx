@@ -8,6 +8,9 @@ import SingleRangeSlider from "../components/SingleRangeSlider";
 import ColorDropdown from "../components/ColorDropdown";
 import CompositeScore from "../components/CompositeScore";
 function Home() {
+  // for github pages deployment
+  const base = import.meta.env.BASE_URL;
+
   const [films, setFilms] = useState([]);
   const [runs, setRuns] = useState([]);
   const [awards, setAwards] = useState([]);
