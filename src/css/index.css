@@ -197,7 +197,7 @@
   grid-template-columns: repeat(2, 1fr);
   padding-top: 25px;
   gap: 10px;
-  justify-content: center;
+  justify-items: center;
 }
 
 .filter-select__option {
